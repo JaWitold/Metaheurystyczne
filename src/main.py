@@ -1,6 +1,6 @@
 import sys
 
-from src.open import read_tsp_instance
+from src.read_tsp_instance import read_tsp_instance
 
 if len(sys.argv) < 2:
   exit(1)
@@ -8,5 +8,7 @@ if len(sys.argv) < 2:
 i = read_tsp_instance(sys.argv[1])
 i.read()
 
-print(i.matrix)
-print(i.graph)
+# print(f"matrix {len(i.matrix)}")
+# print(f"graph {len(i.graph)}")
+
+print(f"Failed {sys.argv[1]}" if len(i.matrix) == 0 and len(i.graph) == 0 and 'GEO' in i.header else "Passed")

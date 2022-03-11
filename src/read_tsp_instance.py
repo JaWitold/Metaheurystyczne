@@ -13,21 +13,30 @@ class read_tsp_instance:
   def read(self):
     with open(self.filename, 'r') as file:
       for line in file:
-        if line.startswith('EDGE_WEIGHT_SECTION'):
+        if line.startswith('EDGE_WEIGHT_SECTION') or line.startswith('NODE_COORD_SECTION'):
           break
         else:
-          line_split = line.split()
+          line_split = line.replace(":", "").split()
           key = line_split[0]
           line_split.remove(key)
-          key = key[0:-1]
           value = ' '.join(str(e) for e in line_split)
           self.header.update({key: value})
-      if self.header['EDGE_WEIGHT_FORMAT'] == 'FULL_MATRIX':
+      if('EDGE_WEIGHT_FORMAT' in self.header.keys()):
+          key = 'EDGE_WEIGHT_FORMAT'
+      elif ('NODE_COORD_SECTION' in self.header.keys()):
+          key = 'EDGE_WEIGHT_FORMAT'
+      elif ('EDGE_WEIGHT_TYPE' in self.header.keys()):
+        key = 'EDGE_WEIGHT_TYPE'
+      # print(self.header)
+      
+      if self.header[key] == 'FULL_MATRIX':
         self.read_full_matrix_to_matrix(file)
-      elif self.header['EDGE_WEIGHT_FORMAT'] == 'LOWER_DIAG_ROW':
+      elif self.header[key] == 'LOWER_DIAG_ROW':
         self.read_lower_diag_row_to_matrix(file)
-      elif self.header['EDGE_WEIGHT_FORMAT'] == 'EUC_2D':
+      elif self.header[key] == 'EUC_2D':
         self.read_euc_2d(file)
+      elif  self.header[key] == 'GEO':
+        return
   
   def read_full_matrix_to_matrix(self, file):
     numbers = [item for sublist in [x.split() for x in file.readlines()] for item in sublist if item.isnumeric()]
@@ -65,4 +74,7 @@ class read_tsp_instance:
         break
       else:
         node = (line.split())
+        if not node:
+          break
         self.graph.add_node(int(node[0]), x=float(node[1]), y=float(node[2]))
+        
