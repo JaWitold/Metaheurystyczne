@@ -77,3 +77,4 @@ class read_tsp_instance:
         if not node:
           break
         self.graph.add_node(int(node[0]), x=float(node[1]), y=float(node[2]))
+        

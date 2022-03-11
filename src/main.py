@@ -1,6 +1,6 @@
 import sys
 
-from src.open import read_tsp_instance
+from src.read_tsp_instance import read_tsp_instance
 
 if len(sys.argv) < 2:
   exit(1)

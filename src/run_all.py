@@ -4,12 +4,12 @@ tsp = "../vendors/ALL_tsp"
 atsp = "../vendors/ALL_atsp"
 
 fails = ''
-def run_tsp(path):
-  # runs on windows
+def run(path, ending):
+  # runs only on windows
   os.chdir(path)
   cwd = os.getcwd()
   
-  list = [x for x in os.listdir(cwd) if x.endswith(".tsp")]
+  list = [x for x in os.listdir(cwd) if x.endswith(ending)]
   index = 0
   
   for directory in list:
@@ -25,4 +25,5 @@ def run_tsp(path):
 
   print(list)
 
-run_tsp(tsp)
+run(tsp, ".tsp")
+run(atsp, ".atsp")
