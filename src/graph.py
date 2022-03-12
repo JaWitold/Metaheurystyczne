@@ -12,6 +12,7 @@ class Graph:
     dimension = 0
     matrix = []
     coordinates = dict()
+    path = []
     
     def __init__(self, filename):
         self.filename = filename
@@ -22,6 +23,7 @@ class Graph:
         }
         self.read()
         self.show_matrix()
+        self.show_solution()
 
     def read(self):
         with open(self.filename, 'r') as file:
@@ -53,6 +55,7 @@ class Graph:
     
     def set_dimension(self):
         self.dimension = int(self.header["DIMENSION"])
+        self.path = [x for x in range(0, self.dimension)]
     
     def read_data_from_full_matrix(self, file):
         numbers = self.read_numbers(file)
@@ -97,6 +100,9 @@ class Graph:
             for node in self.coordinates.values():
                 plt.plot(node['x'], node['y'], color="blue", marker="o", markersize=2)
             plt.show()
+
+    def show_solution(self):
+        print(self.path)
 
     @staticmethod
     def read_numbers(file):
