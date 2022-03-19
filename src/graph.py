@@ -1,7 +1,12 @@
 from matplotlib import pyplot as plt
 import sys
-import random 
+import random
 import copy
+import os
+from dotenv import load_dotenv
+
+from src.generate import GraphGenerator
+
 
 class Graph:
     supported_formats = ['FULL_MATRIX', 'EUC_2D', 'LOWER_DIAG_ROW']
@@ -10,26 +15,28 @@ class Graph:
     supported_header_delimiters = ['NODE_COORD_SECTION', 'EDGE_WEIGHT_SECTION']
     
     edge_weight_format = ""
+    filename = ""
     
     header = dict()
-    optimal={"berlin52.tsp": 7542 ,"br17.atsp": 39,"gr120.tsp": 6942 }
     dimension = 0
     matrix = []
     coordinates = dict()
     path = []
     
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self):
         self.read_data_from = {
             "FULL_MATRIX": self.read_data_from_full_matrix,
             "EUC_2D": self.read_data_from_euc_2d,
             "LOWER_DIAG_ROW": self.read_data_from_lower_diag_row
         }
-        self.read()
-        self.show_matrix()
-        self.show_solution()
-
-    def read(self):
+    
+    def generate(self, variant, dimension, seed, upper_bound=100):
+        generator = GraphGenerator(variant, dimension, seed, upper_bound)
+        self.matrix = generator.generate()
+        self.dimension = len(self.matrix)
+    
+    def read(self, filename):
+        self.filename = filename
         with open(self.filename, 'r') as file:
             for line in file:
                 line = line.replace(":", "")
@@ -104,124 +111,130 @@ class Graph:
             for node in self.coordinates.values():
                 plt.plot(node['x'], node['y'], color="blue", marker="o", markersize=2)
             plt.show()
-
-    def k_random_method(self):
-        k=100
-        print("k: ",k)
-        min_dist=sys.maxsize
-        vertex=[x for x in range(self.dimension)]
-        path=[]
+    
+    def k_random_method(self, k):
+        min_dist = sys.maxsize
+        vertex = [x for x in range(self.dimension)]
+        path = []
         for j in range(k):
             random.shuffle(vertex)
-            distance=0
-            for i in range(len(vertex)):
-                if i+1==len(vertex):
-                    distance=distance+int(self.matrix[vertex[i]][vertex[0]])
-                    break
-                distance=distance+int(self.matrix[vertex[i]][vertex[i+1]])
-            if(distance<min_dist):
-                min_dist=distance
-                path=vertex.copy()
-        print("Droga: ",min_dist)
-        print("Cykl: ",path)
-        if self.edge_weight_format == 'EUC_2D':
-            self.draw_solution(path)
-        self.PRD(min_dist)
-
-    def nearest_neighbor(self):
-        start=random.randint(0,self.dimension-1)
-        print(start)
-        path=[start]
-        min_dist=0
-        matrix_copy=copy.deepcopy(self.matrix)
-        while(len(path)!=self.dimension):
-            distances=matrix_copy[start]
+            distance = self.cost(vertex)
+            if distance < min_dist:
+                min_dist = distance
+                path = vertex.copy()
+        self.path = path
+        cost = min_dist
+        self.show_solution(cost)
+        self.draw_solution()
+        self.prd(cost)
+    
+    def nearest_neighbor(self, start):
+        path = [start]
+        min_dist = 0
+        matrix_copy = copy.deepcopy(self.matrix)
+        while len(path) != self.dimension:
+            distances = matrix_copy[start]
             distances.sort()
-            counter=0
-            j=0
+            counter = 0
+            j = 0
             while j < self.dimension:
-                if distances[counter]==self.matrix[start][j]:
+                if distances[counter] == self.matrix[start][j]:
                     if j not in path:
-                        if(distances[counter]==0):
-                            counter=counter+1
-                            j=-1
+                        if distances[counter] == 0:
+                            counter = counter + 1
+                            j = -1
                         else:
-                            min_dist=min_dist+int(distances[counter])
+                            min_dist = min_dist + int(distances[counter])
                             path.append(j)
-                            start=j
-                            counter=0
+                            start = j
+                            counter = 0
                             break
-                j=j+1
-                if(j==self.dimension):
-                    j=0 
-                    counter=counter+1
-                if(counter==self.dimension):
+                j = j + 1
+                if j == self.dimension:
+                    j = 0
+                    counter = counter + 1
+                if counter == self.dimension:
                     print("Ślepy zaułek")
                     return
-        print("Droga: ",min_dist)
-        print("Cykl: ",path)
-        if self.edge_weight_format == 'EUC_2D':
-            self.draw_solution(path)
-        self.PRD(min_dist)
-
+        self.path = path
+        cost = min_dist
+        self.show_solution(cost)
+        self.draw_solution()
+        self.prd(cost)
+    
     def extended_nearest_neighbor(self):
         pass
-
-    def cost(self,vertex):
-        distance=0
-        for i in range(len(vertex)):
-            if i+1==len(vertex):
-                distance=distance+int(self.matrix[vertex[i]][vertex[0]])
+    
+    # Cost function
+    def cost(self, path):
+        distance = 0
+        for i in range(len(path)):
+            if i + 1 == len(path):
+                distance = distance + int(self.matrix[path[i]][path[0]])
                 break
-            distance=distance+int(self.matrix[vertex[i]][vertex[i+1]])
+            distance = distance + int(self.matrix[path[i]][path[i + 1]])
         return distance
-
-    def two_opt(self):
-        path = [x for x in range(self.dimension)]
+    
+    def two_opt(self, param):
+        path = [int(x) for x in param.split(",")]
+        if len(path) != self.dimension:
+            print(f"path is too short, expected {self.dimension}")
+            return
         best = path
         improved = True
         while improved:
             improved = False
-            for i in range(0, len(path)-1):
-                for j in range(i+1, len(path)):
-                    if j-i == 1: continue
+            for i in range(0, len(path) - 1):
+                for j in range(i + 1, len(path)):
+                    # if j - i == 1: continue
                     new_route = path[:]
                     new_route[i:j] = reversed(new_route[i:j])
                     if self.cost(new_route) < self.cost(best):
                         best = new_route
                         improved = True
             path = best
-        print("Droga: ",self.cost(best))
-        print("Cykl: ", path)
+        self.path = path
+        cost = self.cost(self.path)
+        self.show_solution(cost)
+        self.draw_solution()
+        self.prd(cost)
+    
+    def show_solution(self, cost):
+        print(f"Cost: {cost}")
+        print(f"Path: {self.path}")
+    
+    def draw_solution(self):
         if self.edge_weight_format == 'EUC_2D':
-            self.draw_solution(best)
-        self.PRD(self.cost(best))
-
-    def show_solution(self):
-        print("Metoda k-random: ")
-        self.k_random_method()
-        print("Metoda najbliższego sąsiada: ")
-        self.nearest_neighbor()
-        print("Roszerzona metoda najbliższego sąsiada: ")
-        self.extended_nearest_neighbor()
-        print("Algorytm 2-OPT: ")
-        self.two_opt()
-
-    def draw_solution(self,path):
-        for i in range(0, len(path)-1):
-            ni=self.coordinates[path[i]+1]
-            nj=self.coordinates[path[i+1]+1]
-            plt.plot([ni['x'], nj['x']], [ni['y'], nj['y']], color="red", linewidth=0.1)
-        for node in self.coordinates.values():
-            plt.plot(node['x'], node['y'], color="blue", marker="o", markersize=2)
-        plt.show()
-
-    def PRD(self,x):
-        ref=self.optimal[self.filename]
-        result=100*(x-ref)/ref
+            for i in range(0, len(self.path)):
+                ni = self.coordinates[self.path[i] + 1]
+                nj = self.coordinates[self.path[(i + 1) % len(self.path)] + 1]
+                plt.plot([ni['x'], nj['x']], [ni['y'], nj['y']], color="red", linewidth=0.2)
+            for node in self.coordinates.values():
+                plt.plot(node['x'], node['y'], color="blue", marker="o", markersize=2)
+            plt.show()
+    
+    def prd(self, x):
+        load_dotenv()
+        ref = os.getenv(os.path.basename(self.filename))
+        if ref is None:
+            print("reference value not found in .env")
+            return
+        ref = int(ref)
+        print(f"reference value: {ref}")
+        result = 100 * (x - ref) / ref
         print("PRD(x):{}%".format(result))
-
+    
     @staticmethod
     def read_numbers(file):
         return [item for sublist in [x.split() for x in file.readlines()] for item in sublist if
                 item.isnumeric()]
+    
+    def run(self, algorithm, param):
+        if algorithm == "k-random":
+            self.k_random_method(int(param))
+        elif algorithm == "nearest-neighbor":
+            self.nearest_neighbor(int(param))
+        elif algorithm == "two-opt":
+            self.two_opt(param)
+        else:
+            print("Unsupported algorithm")

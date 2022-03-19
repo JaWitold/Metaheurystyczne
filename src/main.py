@@ -1,17 +1,21 @@
 import sys
-
 from graph import Graph
-from generate import GenerateGraph
 
-if(sys.argv[1]=="generate"):
-    if len(sys.argv)==6:
-        i=GenerateGraph(sys.argv[2],int(sys.argv[3]),int(sys.argv[4]),int(sys.argv[5]))
-    elif len(sys.argv)==5:
-        i=GenerateGraph(sys.argv[2],int(sys.argv[3]),int(sys.argv[4]))
-elif(sys.argv[1]=="load"):
-    i = Graph(sys.argv[2])
+mode = sys.argv[1]
+i = Graph()
+
+if mode == "generate":
+    algorithm = sys.argv[2]
+    i.generate(sys.argv[4], sys.argv[5], sys.argv[6])
+    i.run(algorithm, sys.argv[3])
+elif mode == "load":
+    algorithm = sys.argv[3]
+    i.read(sys.argv[2])
+    i.run(algorithm, sys.argv[4])
 else:
-    print("Unsupported type")
-    print("main.py <load> <filename>")
-    print("OR")
-    print("main.py <generate> <type> <dimension> <seed> <upper_bound (optional, default=100)>")
+    print("UNSUPPORTED TYPE \n"
+          "USAGE: \n"
+          "main.py load <filename> <algorithm> <params> OR \n"
+          "main.py generate <algorithm> <params> <type> <dimension> <seed> <upper_bound (optional, default=100)>\n"
+          "WHERE algorithm IS ONE OF \"k-random\", \"nearest-neighbor\" OR \"two-opt\"")
+          
