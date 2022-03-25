@@ -17,5 +17,5 @@ else:
           "USAGE: \n"
           "main.py load <filename> <algorithm> <params> OR \n"
           "main.py generate <algorithm> <params> <type> <dimension> <seed> <upper_bound (optional, default=100)>\n"
-          "WHERE algorithm IS ONE OF \"k-random\", \"nearest-neighbor\" OR \"two-opt\"")
+          "WHERE algorithm IS ONE OF \"k-random\", \"nearest-neighbor\" , \"extended-nearest-neighbor (in this option <params> must be 'none' \" OR \"two-opt\"")
           

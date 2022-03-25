@@ -5,7 +5,7 @@ import copy
 import os
 from dotenv import load_dotenv
 
-from src.generate import GraphGenerator
+from generate import GraphGenerator
 
 
 class Graph:
@@ -32,8 +32,9 @@ class Graph:
     
     def generate(self, variant, dimension, seed, upper_bound=100):
         generator = GraphGenerator(variant, dimension, seed, upper_bound)
-        self.matrix = generator.generate()
+        self.matrix,self.coordinates = generator.generate()
         self.dimension = len(self.matrix)
+        self.edge_weight_format = variant
     
     def read(self, filename):
         self.filename = filename
@@ -124,46 +125,65 @@ class Graph:
                 path = vertex.copy()
         self.path = path
         cost = min_dist
+        self.show_matrix()
         self.show_solution(cost)
         self.draw_solution()
         self.prd(cost)
     
     def nearest_neighbor(self, start):
+        #self.show_matrix()
+        min_dist=0
         path = [start]
-        min_dist = 0
-        matrix_copy = copy.deepcopy(self.matrix)
-        while len(path) != self.dimension:
-            distances = matrix_copy[start]
-            distances.sort()
-            counter = 0
-            j = 0
-            while j < self.dimension:
-                if distances[counter] == self.matrix[start][j]:
-                    if j not in path:
-                        if distances[counter] == 0:
-                            counter = counter + 1
-                            j = -1
-                        else:
-                            min_dist = min_dist + int(distances[counter])
-                            path.append(j)
-                            start = j
-                            counter = 0
-                            break
-                j = j + 1
-                if j == self.dimension:
-                    j = 0
-                    counter = counter + 1
-                if counter == self.dimension:
-                    print("Ślepy zaułek")
-                    return
+        matrix_copy=copy.deepcopy(self.matrix)
+        indexes=[x for x in range(self.dimension)]
+        while(len(path)!=self.dimension):
+            points=dict(zip(indexes,matrix_copy[start]))
+            neighbors=sorted(points.items(), key=lambda x: x[1])
+            for key,value in neighbors:
+                if key not in path:
+                    start=key
+                    min_dist = min_dist + int(value)
+                    path.append(key)
+                    break
+        min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
         self.path = path
-        cost = min_dist
-        self.show_solution(cost)
+        self.show_matrix()
+        self.show_solution(min_dist)
         self.draw_solution()
-        self.prd(cost)
+        self.prd(min_dist)
     
+    #oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
     def extended_nearest_neighbor(self):
+        min_dist_total=sys.maxsize
+        starting_vertex=-1
+        path_total=[]
+        for start in range(self.dimension):
+            vertex=start
+            min_dist=0
+            path = [start]
+            matrix_copy=copy.deepcopy(self.matrix)
+            indexes=[x for x in range(self.dimension)]
+            while(len(path)!=self.dimension):
+                points=dict(zip(indexes,matrix_copy[start]))
+                neighbors=sorted(points.items(), key=lambda x: x[1])
+                for key,value in neighbors:
+                    if key not in path:
+                        start=key
+                        min_dist = min_dist + int(value)
+                        path.append(key)
+                        break
+            min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
+            if(min_dist_total>min_dist):
+                min_dist_total=min_dist
+                starting_vertex=vertex
+                path_total=copy.deepcopy(path)
         pass
+        self.path=path_total
+        self.show_matrix()
+        print("Best start: ", starting_vertex)
+        self.show_solution(min_dist_total)
+        self.draw_solution()
+        self.prd(min_dist_total)
     
     # Cost function
     def cost(self, path):
@@ -176,7 +196,8 @@ class Graph:
         return distance
     
     def two_opt(self, param):
-        path = [int(x) for x in param.split(",")]
+        path = [x for x in range(self.dimension)]
+        #path = [int(x) for x in param.split(",")]
         if len(path) != self.dimension:
             print(f"path is too short, expected {self.dimension}")
             return
@@ -187,14 +208,16 @@ class Graph:
             for i in range(0, len(path) - 1):
                 for j in range(i + 1, len(path)):
                     # if j - i == 1: continue
+                    current_cost=self.cost(best)
                     new_route = path[:]
                     new_route[i:j] = reversed(new_route[i:j])
-                    if self.cost(new_route) < self.cost(best):
+                    if self.cost(new_route) < current_cost:
                         best = new_route
                         improved = True
             path = best
         self.path = path
         cost = self.cost(self.path)
+        self.show_matrix()
         self.show_solution(cost)
         self.draw_solution()
         self.prd(cost)
@@ -236,5 +259,7 @@ class Graph:
             self.nearest_neighbor(int(param))
         elif algorithm == "two-opt":
             self.two_opt(param)
+        elif algorithm == 'extended-nearest-neighbor':
+            self.extended_nearest_neighbor()
         else:
             print("Unsupported algorithm")
