@@ -2,4 +2,4 @@
 vendors/*
 !vendors/ALL_atsp.tar
 !vendors/ALL_tsp.tar
-src/__pycache__/
+*/__pycache__/
