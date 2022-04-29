@@ -22,6 +22,12 @@ class Graph:
     matrix = []
     coordinates = dict()
     path = []
+
+    max_iterations = 0
+    max_stagnation_iterations = 0
+    max_tabu_list_size = 0
+    iter=0
+    neighborhood_size = 0
     
     def __init__(self):
         self.read_data_from = {
@@ -179,6 +185,7 @@ class Graph:
                 path_total=copy.deepcopy(path)
         pass
         self.path=path_total
+        print(min_dist_total)
         # self.show_matrix()
         # print("Best start: ", starting_vertex)
         # self.show_solution(min_dist_total)
@@ -218,13 +225,78 @@ class Graph:
         self.path = path
         cost = self.cost(self.path)
         # self.show_matrix()
-        # self.show_solution(cost)
+        self.show_solution(cost)
         # self.draw_solution()
+        #self.prd(cost)
+
+    def tabu(self,param):
+        #self.extended_nearest_neighbor()
+        #self.two_opt("None")
+        #s_best=self.path
+        params = [int(x) for x in param.split(",")]
+        self.max_iterations = params[0]
+        self.max_stagnation_iterations = params[1]
+        self.max_tabu_list_size = params[2]
+        self.neighborhood_size = params[3]
+        s_best=[x for x in range(self.dimension)]
+        #random.shuffle(s_best)
+        best_path = copy.deepcopy(s_best)
+        best_candidate = copy.deepcopy(s_best)
+        no_opt_iterations = 0
+        tabu_list = [s_best]
+
+        while not self.stopping_condition():
+            self.iter += 1
+            s_neighborhood = self.get_neighbors(best_candidate)
+            best_candidate = s_neighborhood[0]
+            for sCandidate in s_neighborhood:
+                if sCandidate not in tabu_list and self.fitness(sCandidate) > self.fitness(best_candidate):
+                    best_candidate = sCandidate
+            if self.fitness(best_candidate) > self.fitness(s_best):
+                s_best = best_candidate
+            else:
+                no_opt_iterations += 1
+            if no_opt_iterations == self.max_stagnation_iterations:
+                best_path=copy.deepcopy(s_best)
+                random.shuffle(s_best)
+                no_opt_iterations=0
+            tabu_list.append(best_candidate)
+            if len(tabu_list) > self.max_tabu_list_size:
+                tabu_list.pop(0)
+        if self.fitness(s_best) > self.fitness(best_path):
+            best_path = copy.deepcopy(s_best)
+        for item in tabu_list:
+            if self.fitness(item) > self.fitness(best_path):
+                best_path=copy.deepcopy(item)
+        cost = self.cost(best_path)
+        self.path = best_path
+        self.show_solution(cost)
         self.prd(cost)
     
+    def fitness(self, candidate):
+        return 1 / self.cost(candidate)
+    
+    def stopping_condition(self):
+        return self.iter > self.max_iterations
+    
+    def get_neighbors(self, candidate):
+        neighbors = []
+        for i in range(0, len(candidate) // self.neighborhood_size):
+            new_candidate = copy.deepcopy(candidate)
+            node_1 = random.randint(1, len(candidate) - 1)
+            # node_2 = node_1 - 1
+            node_2 = random.randint(0, len(candidate) - 1)
+            # swap
+            if node_1 == node_2:
+                continue
+            new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
+            neighbors.append(new_candidate)
+
+        return neighbors
+    
     def show_solution(self, cost):
-        print(f"Cost: {cost}")
-        print(f"Path: {self.path}")
+        print(f"{cost};",end="")
+        #print(f"Path: {self.path}")
     
     def draw_solution(self):
         if self.edge_weight_format == 'EUC_2D':
@@ -238,14 +310,14 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(os.path.basename(self.filename))
+        ref = os.getenv(self.filename.split('/')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        print(f"reference value: {ref}")
+        print(f"{ref};",end="")
         result = 100 * (x - ref) / ref
-        print("PRD(x):{}%".format(result))
+        print("{}%".format(result))
     
     @staticmethod
     def read_numbers(file):
@@ -261,5 +333,7 @@ class Graph:
             self.two_opt(param)
         elif algorithm == 'extended-nearest-neighbor':
             self.extended_nearest_neighbor()
+        elif algorithm == 'tabu':
+            self.tabu(param)
         else:
             print("Unsupported algorithm")
