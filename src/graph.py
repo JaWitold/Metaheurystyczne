@@ -22,11 +22,11 @@ class Graph:
     matrix = []
     coordinates = dict()
     path = []
-
+    
     max_iterations = 0
     max_stagnation_iterations = 0
     max_tabu_list_size = 0
-    iter=0
+    iter = 0
     neighborhood_size = 0
     
     def __init__(self):
@@ -38,7 +38,7 @@ class Graph:
     
     def generate(self, variant, dimension, seed, upper_bound=100):
         generator = GraphGenerator(variant, dimension, seed, upper_bound)
-        self.matrix,self.coordinates = generator.generate()
+        self.matrix, self.coordinates = generator.generate()
         self.dimension = len(self.matrix)
         self.edge_weight_format = variant
     
@@ -137,54 +137,54 @@ class Graph:
         # self.prd(cost)
     
     def nearest_neighbor(self, start):
-        #self.show_matrix()
-        min_dist=0
+        # self.show_matrix()
+        min_dist = 0
         path = [start]
-        matrix_copy=copy.deepcopy(self.matrix)
-        indexes=[x for x in range(self.dimension)]
-        while(len(path)!=self.dimension):
-            points=dict(zip(indexes,matrix_copy[start]))
-            neighbors=sorted(points.items(), key=lambda x: x[1])
-            for key,value in neighbors:
+        matrix_copy = copy.deepcopy(self.matrix)
+        indexes = [x for x in range(self.dimension)]
+        while len(path) != self.dimension:
+            points = dict(zip(indexes, matrix_copy[start]))
+            neighbors = sorted(points.items(), key=lambda x: x[1])
+            for key, value in neighbors:
                 if key not in path:
-                    start=key
+                    start = key
                     min_dist = min_dist + int(value)
                     path.append(key)
                     break
-        min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
+        min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension - 1]])
         # self.path = path
         # self.show_matrix()
         # self.show_solution(min_dist)
         # self.draw_solution()
         self.prd(min_dist)
-    
-    #oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
+
+    # oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
     def extended_nearest_neighbor(self):
-        min_dist_total=sys.maxsize
-        starting_vertex=-1
-        path_total=[]
+        min_dist_total = sys.maxsize
+        starting_vertex = -1
+        path_total = []
         for start in range(self.dimension):
-            vertex=start
-            min_dist=0
+            vertex = start
+            min_dist = 0
             path = [start]
-            matrix_copy=copy.deepcopy(self.matrix)
-            indexes=[x for x in range(self.dimension)]
-            while(len(path)!=self.dimension):
-                points=dict(zip(indexes,matrix_copy[start]))
-                neighbors=sorted(points.items(), key=lambda x: x[1])
-                for key,value in neighbors:
+            matrix_copy = copy.deepcopy(self.matrix)
+            indexes = [x for x in range(self.dimension)]
+            while len(path) != self.dimension:
+                points = dict(zip(indexes, matrix_copy[start]))
+                neighbors = sorted(points.items(), key=lambda x: x[1])
+                for key, value in neighbors:
                     if key not in path:
-                        start=key
+                        start = key
                         min_dist = min_dist + int(value)
                         path.append(key)
                         break
-            min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
-            if(min_dist_total>min_dist):
-                min_dist_total=min_dist
-                starting_vertex=vertex
-                path_total=copy.deepcopy(path)
+            min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension - 1]])
+            if (min_dist_total > min_dist):
+                min_dist_total = min_dist
+                starting_vertex = vertex
+                path_total = copy.deepcopy(path)
         pass
-        self.path=path_total
+        self.path = path_total
         print(min_dist_total)
         # self.show_matrix()
         # print("Best start: ", starting_vertex)
@@ -204,7 +204,7 @@ class Graph:
     
     def two_opt(self, param):
         path = [x for x in range(self.dimension)]
-        #path = [int(x) for x in param.split(",")]
+        # path = [int(x) for x in param.split(",")]
         if len(path) != self.dimension:
             print(f"path is too short, expected {self.dimension}")
             return
@@ -215,7 +215,7 @@ class Graph:
             for i in range(0, len(path) - 1):
                 for j in range(i + 1, len(path)):
                     # if j - i == 1: continue
-                    current_cost=self.cost(best)
+                    current_cost = self.cost(best)
                     new_route = path[:]
                     new_route[i:j] = reversed(new_route[i:j])
                     if self.cost(new_route) < current_cost:
@@ -227,24 +227,24 @@ class Graph:
         # self.show_matrix()
         self.show_solution(cost)
         # self.draw_solution()
-        #self.prd(cost)
-
-    def tabu(self,param):
-        #self.extended_nearest_neighbor()
-        #self.two_opt("None")
-        #s_best=self.path
+        # self.prd(cost)
+    
+    def tabu(self, param):
+        # self.extended_nearest_neighbor()
+        # self.two_opt("None")
+        # s_best=self.path
         params = [int(x) for x in param.split(",")]
         self.max_iterations = params[0]
         self.max_stagnation_iterations = params[1]
         self.max_tabu_list_size = params[2]
         self.neighborhood_size = params[3]
-        s_best=[x for x in range(self.dimension)]
-        #random.shuffle(s_best)
+        s_best = [x for x in range(self.dimension)]
+        random.shuffle(s_best)
         best_path = copy.deepcopy(s_best)
         best_candidate = copy.deepcopy(s_best)
         no_opt_iterations = 0
         tabu_list = [s_best]
-
+        
         while not self.stopping_condition():
             self.iter += 1
             s_neighborhood = self.get_neighbors(best_candidate)
@@ -257,17 +257,15 @@ class Graph:
             else:
                 no_opt_iterations += 1
             if no_opt_iterations == self.max_stagnation_iterations:
-                best_path=copy.deepcopy(s_best)
+                best_path = copy.deepcopy(s_best)
                 random.shuffle(s_best)
-                no_opt_iterations=0
+                no_opt_iterations = 0
             tabu_list.append(best_candidate)
             if len(tabu_list) > self.max_tabu_list_size:
                 tabu_list.pop(0)
         if self.fitness(s_best) > self.fitness(best_path):
             best_path = copy.deepcopy(s_best)
-        for item in tabu_list:
-            if self.fitness(item) > self.fitness(best_path):
-                best_path=copy.deepcopy(item)
+    
         cost = self.cost(best_path)
         self.path = best_path
         self.show_solution(cost)
@@ -291,12 +289,13 @@ class Graph:
                 continue
             new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
             neighbors.append(new_candidate)
-
+        
         return neighbors
     
-    def show_solution(self, cost):
-        print(f"{cost};",end="")
-        #print(f"Path: {self.path}")
+    @staticmethod
+    def show_solution(cost):
+        print(f"{cost};", end="")
+        # print(f"Path: {self.path}")
     
     def draw_solution(self):
         if self.edge_weight_format == 'EUC_2D':
@@ -310,12 +309,12 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(self.filename.split('/')[-1].split('.')[0])
+        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        print(f"{ref};",end="")
+        print(f"{ref};", end="")
         result = 100 * (x - ref) / ref
         print("{}%".format(result))
     
