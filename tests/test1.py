@@ -21,7 +21,8 @@ def run(path, ending):
         if os.listdir(cwd)[0] == "brazil58.tsp":
             os.chdir('..')
             continue
-        command = '"C:\Programs\Python 3.10.4\python.exe" ' + "C:/Dev/wppt/2022/algorytmy_metaheurystyczne/src/main.py load " + cwd + '\\' + os.listdir(cwd)[0] + " tabu 1,1,7,1"
+        print(os.listdir(cwd)[0])
+        command = '" C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" ' + "C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\src\\main.py load " + cwd + '\\' + os.listdir(cwd)[0] + " tabu 1000,10,7,10"
         print(f"finnished {round(index / len(list_of_graphs) * 100)}%, ({index}/{len(list_of_graphs)})")
         result = os.system(command)
         if result != 0:
@@ -32,5 +33,5 @@ def run(path, ending):
     print(list_of_graphs)
 
 
-run(tsp, ".tsp")
+# run(tsp, ".tsp")
 run(atsp, ".atsp")
