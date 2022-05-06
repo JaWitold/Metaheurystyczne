@@ -4,7 +4,6 @@ import random
 import copy
 import os
 from dotenv import load_dotenv
-
 from generate import GraphGenerator
 
 
@@ -204,6 +203,7 @@ class Graph:
     
     def two_opt(self, param):
         path = [x for x in range(self.dimension)]
+        random.shuffle(path)
         # path = [int(x) for x in param.split(",")]
         if len(path) != self.dimension:
             print(f"path is too short, expected {self.dimension}")
@@ -231,19 +231,20 @@ class Graph:
     
     def tabu(self, param):
         # self.extended_nearest_neighbor()
-        # self.two_opt("None")
-        # s_best=self.path
+        #self.two_opt("None")
+        #s_best=self.path
         params = [int(x) for x in param.split(",")]
         self.max_iterations = params[0]
         self.max_stagnation_iterations = params[1]
         self.max_tabu_list_size = params[2]
         self.neighborhood_size = params[3]
         s_best = [x for x in range(self.dimension)]
-        random.shuffle(s_best)
+        #random.shuffle(s_best)
         best_path = copy.deepcopy(s_best)
         best_candidate = copy.deepcopy(s_best)
         no_opt_iterations = 0
         tabu_list = [s_best]
+        best_cost=self.cost(s_best)
         
         while not self.stopping_condition():
             self.iter += 1
@@ -252,8 +253,9 @@ class Graph:
             for sCandidate in s_neighborhood:
                 if sCandidate not in tabu_list and self.fitness(sCandidate) > self.fitness(best_candidate):
                     best_candidate = sCandidate
-            if self.fitness(best_candidate) > self.fitness(s_best):
+            if self.fitness(best_candidate) > 1/best_cost:
                 s_best = best_candidate
+                best_cost=self.cost(best_candidate)
             else:
                 no_opt_iterations += 1
             if no_opt_iterations == self.max_stagnation_iterations:
@@ -263,13 +265,14 @@ class Graph:
             tabu_list.append(best_candidate)
             if len(tabu_list) > self.max_tabu_list_size:
                 tabu_list.pop(0)
-        if self.fitness(s_best) > self.fitness(best_path):
+        if self.fitness(s_best) > 1/best_cost:
             best_path = copy.deepcopy(s_best)
-    
-        cost = self.cost(best_path)
+            best_cost=self.cost(s_best)
+        
+        self.show_matrix()
         self.path = best_path
-        self.show_solution(cost)
-        self.prd(cost)
+        self.show_solution(best_cost)
+        self.prd(best_cost)
     
     def fitness(self, candidate):
         return 1 / self.cost(candidate)
@@ -280,22 +283,29 @@ class Graph:
     def get_neighbors(self, candidate):
         neighbors = []
         for i in range(0, len(candidate) // self.neighborhood_size):
-            new_candidate = copy.deepcopy(candidate)
+            #uncomment for swap
+            #new_candidate = copy.deepcopy(candidate)
+            mock_candidate=copy.deepcopy(candidate)
             node_1 = random.randint(1, len(candidate) - 1)
             # node_2 = node_1 - 1
-            node_2 = random.randint(0, len(candidate) - 1)
+            node_2 = random.randint(node_1, len(candidate) - 1)
             # swap
             if node_1 == node_2:
                 continue
-            new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
+            #print("NODES: {}, {}".format(node_1,node_2))
+            #invert
+            new_candidate=mock_candidate[:node_1]
+            to_reverse=mock_candidate[node_1:node_2]
+            new_candidate=mock_candidate[:node_1]+to_reverse[::-1]+mock_candidate[node_2:]
+            #Swap
+            #new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
             neighbors.append(new_candidate)
         
         return neighbors
     
-    @staticmethod
-    def show_solution(cost):
-        print(f"{cost};", end="")
-        # print(f"Path: {self.path}")
+    def show_solution(self,cost):
+        print(f"Cost: {cost}")
+        print(f"Path: {self.path}")
     
     def draw_solution(self):
         if self.edge_weight_format == 'EUC_2D':
@@ -309,14 +319,14 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
+        ref = os.getenv(self.filename.split('/')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        print(f"{ref};", end="")
+        print(f"REF: {ref};")
         result = 100 * (x - ref) / ref
-        print("{}%".format(result))
+        print("PRD: {}%".format(result))
     
     @staticmethod
     def read_numbers(file):
