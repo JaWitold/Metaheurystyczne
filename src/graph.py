@@ -5,6 +5,7 @@ import copy
 import os
 from dotenv import load_dotenv
 from generate import GraphGenerator
+import matplotlib.pyplot as plt
 
 
 class Graph:
@@ -21,6 +22,8 @@ class Graph:
     matrix = []
     coordinates = dict()
     path = []
+    
+    sbests_tabu = ([], [])
     
     max_iterations = 0
     max_stagnation_iterations = 0
@@ -103,7 +106,7 @@ class Graph:
     def show_matrix(self):
         for subset in self.matrix:
             print(subset)
-        self.draw()
+        # self.draw()
     
     def draw(self):
         if self.edge_weight_format == 'EUC_2D':
@@ -156,7 +159,7 @@ class Graph:
         # self.show_solution(min_dist)
         # self.draw_solution()
         self.prd(min_dist)
-
+    
     # oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
     def extended_nearest_neighbor(self):
         min_dist_total = sys.maxsize
@@ -231,21 +234,21 @@ class Graph:
     
     def tabu(self, param):
         # self.extended_nearest_neighbor()
-        #self.two_opt("None")
-        #s_best=self.path
+        # self.two_opt("None")
+        # s_best=self.path
         params = [int(x) for x in param.split(",")]
         self.max_iterations = params[0]
         self.max_stagnation_iterations = params[1]
         self.max_tabu_list_size = params[2]
         self.neighborhood_size = params[3]
         s_best = [x for x in range(self.dimension)]
-        #random.shuffle(s_best)
+        random.shuffle(s_best)
         best_path = copy.deepcopy(s_best)
         best_candidate = copy.deepcopy(s_best)
         no_opt_iterations = 0
         tabu_list = [s_best]
-        best_cost=self.cost(s_best)
-        
+        best_cost = self.cost(s_best)
+        self.prd(best_cost)
         while not self.stopping_condition():
             self.iter += 1
             s_neighborhood = self.get_neighbors(best_candidate)
@@ -253,9 +256,12 @@ class Graph:
             for sCandidate in s_neighborhood:
                 if sCandidate not in tabu_list and self.fitness(sCandidate) > self.fitness(best_candidate):
                     best_candidate = sCandidate
-            if self.fitness(best_candidate) > 1/best_cost:
+            # self.sbests_tabu[1].append(self.cost(best_candidate))
+
+            if self.fitness(best_candidate) > 1 / best_cost:
                 s_best = best_candidate
-                best_cost=self.cost(best_candidate)
+                best_cost = self.cost(best_candidate)
+                self.prd(best_cost)
             else:
                 no_opt_iterations += 1
             if no_opt_iterations == self.max_stagnation_iterations:
@@ -265,45 +271,54 @@ class Graph:
             tabu_list.append(best_candidate)
             if len(tabu_list) > self.max_tabu_list_size:
                 tabu_list.pop(0)
-        if self.fitness(s_best) > 1/best_cost:
-            best_path = copy.deepcopy(s_best)
-            best_cost=self.cost(s_best)
+            # add data to plot
+            self.sbests_tabu[0].append(self.iter)
+            self.sbests_tabu[1].append(best_cost)
         
-        self.show_matrix()
+        if self.fitness(s_best) > 1 / best_cost:
+            best_path = copy.deepcopy(s_best)
+            best_cost = self.cost(s_best)
+        
+        # self.show_matrix()
         self.path = best_path
         self.show_solution(best_cost)
         self.prd(best_cost)
+        self.plot_tabu()
+    
+    def plot_tabu(self):
+        plt.plot(self.sbests_tabu[0], self.sbests_tabu[1])
+        plt.show()
     
     def fitness(self, candidate):
         return 1 / self.cost(candidate)
     
     def stopping_condition(self):
-        return self.iter > self.max_iterations
+        return self.iter >= self.max_iterations
     
     def get_neighbors(self, candidate):
         neighbors = []
         for i in range(0, len(candidate) // self.neighborhood_size):
-            #uncomment for swap
-            #new_candidate = copy.deepcopy(candidate)
-            mock_candidate=copy.deepcopy(candidate)
+            # uncomment for swap
+            # new_candidate = copy.deepcopy(candidate)
+            mock_candidate = copy.deepcopy(candidate)
             node_1 = random.randint(1, len(candidate) - 1)
             # node_2 = node_1 - 1
             node_2 = random.randint(node_1, len(candidate) - 1)
             # swap
             if node_1 == node_2:
                 continue
-            #print("NODES: {}, {}".format(node_1,node_2))
-            #invert
-            new_candidate=mock_candidate[:node_1]
-            to_reverse=mock_candidate[node_1:node_2]
-            new_candidate=mock_candidate[:node_1]+to_reverse[::-1]+mock_candidate[node_2:]
-            #Swap
-            #new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
+            # print("NODES: {}, {}".format(node_1,node_2))
+            # invert
+            new_candidate = mock_candidate[:node_1]
+            to_reverse = mock_candidate[node_1:node_2]
+            new_candidate = mock_candidate[:node_1] + to_reverse[::-1] + mock_candidate[node_2:]
+            # Swap
+            # new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
             neighbors.append(new_candidate)
         
         return neighbors
     
-    def show_solution(self,cost):
+    def show_solution(self, cost):
         print(f"Cost: {cost}")
         print(f"Path: {self.path}")
     
@@ -319,14 +334,15 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(self.filename.split('/')[-1].split('.')[0])
+        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        print(f"REF: {ref};")
+        # print(f"REF: {ref}; COST: {x}")
         result = 100 * (x - ref) / ref
-        print("PRD: {}%".format(result))
+        # print("PRD: {}%".format(result))
+        print(f"{self.iter}, {x}, {result}")
     
     @staticmethod
     def read_numbers(file):
