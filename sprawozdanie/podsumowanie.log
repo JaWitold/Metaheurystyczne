@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.4.1)  1 APR 2022 04:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.5.5)  6 MAY 2022 01:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -837,276 +837,231 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./wstep.tex
-LaTeX Font Info:    External font `plex10' loaded for size
-(Font)              <10.95> on input line 5.
+Underfull \hbox (badness 10000) in paragraph at lines 3--11
 
-Overfull \hbox (20.9084pt too wide) in paragraph at lines 10--11
-\OT4/cmr/m/n/10.95 Algorytm naj-bli»-sze-go s¡-sia-da jest al-go-ryt-mem z gru-
-py al-go-ryt-mów zachªannych-
  []
 
-[1
+LaTeX Font Info:    External font `plex10' loaded for size
+(Font)              <10.95> on input line 21.
+) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]) [2]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 \openout2 = `zadanie_1.aux'.
 
  (./zadanie_1.tex
-Overfull \hbox (6.24718pt too wide) in paragraph at lines 5--6
-\OT4/cmr/m/n/10.95 Do te-go ba-da-nia u»y-to au-to-ma-tycz-nie wy-ge-ne-ro-wa-n
-ych gra-fów ty-pu \OT4/cmr/bx/n/10.95 EUC2D\OT4/cmr/m/n/10.95 .
+Overfull \hbox (31.00072pt too wide) in paragraph at lines 7--8
+\OT4/cmr/m/n/10.95 Ze wzgl¦-du na czy-tel-no±¢ wszyst-kie wy-ni-ki s¡ za-ª¡-czo
+-ne w pli-ku \OT4/cmr/bx/n/10.95 (\OT4/cmr/m/n/10.95 out[]test[]1[]tsp.csv)
  []
 
+<./charts/chart_test1_1.png, id=173, 549.471pt x 347.334pt>
+File: ./charts/chart_test1_1.png Graphic file (type png)
+<use ./charts/chart_test1_1.png>
+Package pdftex.def Info: ./charts/chart_test1_1.png  used on input line 10.
+(pdftex.def)             Requested size: 412.10223pt x 260.49985pt.
 
-Overfull \hbox (7.89235pt too wide) in paragraph at lines 5--6
-\OT4/cmr/m/n/10.95 Roz-mia-ry gra-fów (ozna-cza-ne li-te-r¡ n) na-le-»¡ do zbio
--ru $\OML/plm/m/it/10.95 n \OMS/plsy/m/n/10.95 2 f\OT4/cmr/m/n/10.95 10\OML/plm
-/m/it/10.95 ; \OT4/cmr/m/n/10.95 15\OML/plm/m/it/10.95 ; \OT4/cmr/m/n/10.95 20\
-OML/plm/m/it/10.95 ; :::; \OT4/cmr/m/n/10.95 100\OMS/plsy/m/n/10.95 g$\OT4/cmr/
-m/n/10.95 .
+Overfull \hbox (52.10223pt too wide) in paragraph at lines 10--12
+ [][] 
+ []
+
+<./charts/chart_test1_2.png, id=174, 549.471pt x 347.334pt>
+File: ./charts/chart_test1_2.png Graphic file (type png)
+<use ./charts/chart_test1_2.png>
+Package pdftex.def Info: ./charts/chart_test1_2.png  used on input line 15.
+(pdftex.def)             Requested size: 412.10223pt x 260.49985pt.
+
+Overfull \hbox (52.10223pt too wide) in paragraph at lines 15--17
+ [][] 
+ []
+
+<./charts/chart_test1_3.png, id=175, 548.595pt x 316.455pt>
+File: ./charts/chart_test1_3.png Graphic file (type png)
+<use ./charts/chart_test1_3.png>
+Package pdftex.def Info: ./charts/chart_test1_3.png  used on input line 20.
+(pdftex.def)             Requested size: 411.44524pt x 237.34067pt.
+
+Overfull \hbox (51.44524pt too wide) in paragraph at lines 20--22
+ [][] 
  []
 
 [3
 
-]
-Overfull \hbox (36.2871pt too wide) in paragraph at lines 39--65
-[][] 
- []
-
-[4]
-<./charts/prd.jpg, id=235, 615.0478pt x 273.27094pt>
-File: ./charts/prd.jpg Graphic file (type jpg)
-<use ./charts/prd.jpg>
-Package pdftex.def Info: ./charts/prd.jpg  used on input line 70.
-(pdftex.def)             Requested size: 461.28473pt x 204.95268pt.
-
-Overfull \hbox (101.28473pt too wide) in paragraph at lines 70--72
- [][] 
- []
-
-<./charts/zaleznoscDrogi.jpg, id=236, 555.57562pt x 302.63063pt>
-File: ./charts/zaleznoscDrogi.jpg Graphic file (type jpg)
-<use ./charts/zaleznoscDrogi.jpg>
-Package pdftex.def Info: ./charts/zaleznoscDrogi.jpg  used on input line 75.
-(pdftex.def)             Requested size: 444.46109pt x 242.10483pt.
-
-Overfull \hbox (84.46109pt too wide) in paragraph at lines 75--77
- [][] 
- []
-
-[5] [6 <./charts/prd.jpg> <./charts/zaleznoscDrogi.jpg>]) [7]
+ <./charts/chart_test1_1.png>] [4 <./charts/chart_test1_2.png> <./charts/chart_
+test1_3.png>]) [5]
 \openout2 = `zadanie_2.aux'.
 
  (./zadanie_2.tex
-Overfull \hbox (43.37798pt too wide) in paragraph at lines 11--18
+Overfull \hbox (16.19115pt too wide) in paragraph at lines 7--8
+\OT4/cmr/m/n/10.95 Ze wzgl¦-du na czy-tel-no±¢ wszyst-kie wy-ni-ki s¡ za-ª¡-czo
+-ne w pli-ku \OT4/cmr/bx/n/10.95 out[]test[]2.csv\OT4/cmr/m/n/10.95 . 
+ []
+
+<./charts/chart_test2_1.png, id=195, 529.98pt x 302.439pt>
+File: ./charts/chart_test2_1.png Graphic file (type png)
+<use ./charts/chart_test2_1.png>
+Package pdftex.def Info: ./charts/chart_test2_1.png  used on input line 10.
+(pdftex.def)             Requested size: 397.48401pt x 226.82867pt.
+
+Overfull \hbox (37.48401pt too wide) in paragraph at lines 10--12
  [][] 
  []
 
+<./charts/chart_test2_2.png, id=197, 529.98pt x 302.439pt>
+File: ./charts/chart_test2_2.png Graphic file (type png)
+<use ./charts/chart_test2_2.png>
+Package pdftex.def Info: ./charts/chart_test2_2.png  used on input line 15.
+(pdftex.def)             Requested size: 397.48401pt x 226.82867pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 21--22
-
+Overfull \hbox (37.48401pt too wide) in paragraph at lines 15--17
+ [][] 
  []
 
-<./charts/chart_test1.png, id=256, 548.595pt x 340.545pt>
-File: ./charts/chart_test1.png Graphic file (type png)
-<use ./charts/chart_test1.png>
-Package pdftex.def Info: ./charts/chart_test1.png  used on input line 37.
-(pdftex.def)             Requested size: 360.0pt x 223.4821pt.
+[6
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+
+ <./charts/chart_test2_1.png>]) [7 <./charts/chart_test2_2.png>]
+\openout2 = `zadanie_3.aux'.
+
+
+(./zadanie_3.tex
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 7
+.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 7.
+
+Overfull \hbox (8.31837pt too wide) in paragraph at lines 3--9
+\OT4/cmr/m/n/10.95 Sprawdzane roz-mia-ry li-sty ta-bu na-le-»¡ do zbio-ru $\OML
+/plm/m/it/10.95 k \OMS/plsy/m/n/10.95 2 f[] ^^@ \OT4/cmr/m/n/10.95 5\OML/plm/m/
+it/10.95 ; [] \OMS/plsy/m/n/10.95 ^^@ \OT4/cmr/m/n/10.95 2\OML/plm/m/it/10.95 ;
+ []; [] \OT4/cmr/m/n/10.95 +
+ []
+
+
+Overfull \hbox (8.68323pt too wide) in paragraph at lines 10--11
+\OT4/cmr/m/n/10.95 W tym te-±cie zo-sta-ªy wy-ko-rzy-sta-ne na-st¦-pu-j¡-ce in-
+stan-cje z bi-blio-te-ki \OT4/cmr/m/it/10.95 TSPLIB\OT4/cmr/m/n/10.95 : 
+ []
 
 [8
 
 
 ]
-Overfull \hbox (9.41711pt too wide) in paragraph at lines 50--105
- [][] 
- []
+Overfull \vbox (126.95653pt too high) has occurred while \output is active []
 
 
-LaTeX Warning: Float too large for page by 145.19894pt on input line 106.
-
-
-Overfull \hbox (9.41711pt too wide) in paragraph at lines 110--164
- [][] 
- []
-
-
-LaTeX Warning: Float too large for page by 120.59895pt on input line 164.
-
-) [9 <./charts/chart_test1.png>] [10] [11]
-\openout2 = `zadanie_3.aux'.
-
- (./zadanie_3.tex
-Overfull \hbox (2.20464pt too wide) in paragraph at lines 1--1
-[]\OT4/cmr/bx/n/14.4 Przypadek Te-sto-wy 3-Algorytm 2-opt: Za-le»-no±¢
- []
-
-
-Overfull \hbox (6.24718pt too wide) in paragraph at lines 6--7
-\OT4/cmr/m/n/10.95 Do te-go ba-da-nia u»y-to au-to-ma-tycz-nie wy-ge-ne-ro-wa-n
-ych gra-fów ty-pu \OT4/cmr/bx/n/10.95 EUC2D\OT4/cmr/m/n/10.95 .
- []
-
-
-Overfull \hbox (7.89235pt too wide) in paragraph at lines 6--7
-\OT4/cmr/m/n/10.95 Roz-mia-ry gra-fów (ozna-cza-ne li-te-r¡ n) na-le-»¡ do zbio
--ru $\OML/plm/m/it/10.95 n \OMS/plsy/m/n/10.95 2 f\OT4/cmr/m/n/10.95 10\OML/plm
-/m/it/10.95 ; \OT4/cmr/m/n/10.95 15\OML/plm/m/it/10.95 ; \OT4/cmr/m/n/10.95 20\
-OML/plm/m/it/10.95 ; :::; \OT4/cmr/m/n/10.95 100\OMS/plsy/m/n/10.95 g$\OT4/cmr/
-m/n/10.95 .
- []
-
-[12
-
-
-] [13]
-<./charts/droga2opt.jpg, id=293, 620.3175pt x 300.3722pt>
-File: ./charts/droga2opt.jpg Graphic file (type jpg)
-<use ./charts/droga2opt.jpg>
-Package pdftex.def Info: ./charts/droga2opt.jpg  used on input line 78.
-(pdftex.def)             Requested size: 465.23698pt x 225.27858pt.
-
-Overfull \hbox (105.23698pt too wide) in paragraph at lines 78--80
- [][] 
- []
-
-<./charts/czas2opt.jpg, id=294, 645.91313pt x 365.86688pt>
-File: ./charts/czas2opt.jpg Graphic file (type jpg)
-<use ./charts/czas2opt.jpg>
-Package pdftex.def Info: ./charts/czas2opt.jpg  used on input line 83.
-(pdftex.def)             Requested size: 452.13611pt x 256.10506pt.
-
-Overfull \hbox (92.13611pt too wide) in paragraph at lines 83--85
- [][] 
- []
-
-[14]) [15 <./charts/droga2opt.jpg> <./charts/czas2opt.jpg>] [16]
+[9]
+<./charts/test4photo3.png, id=233, 573.64313pt x 339.51843pt>
+File: ./charts/test4photo3.png Graphic file (type png)
+<use ./charts/test4photo3.png>
+Package pdftex.def Info: ./charts/test4photo3.png  used on input line 88.
+(pdftex.def)             Requested size: 286.82086pt x 169.75879pt.
+) [10 <./charts/test4photo3.png>]
 \openout2 = `zadanie_4.aux'.
 
+ (./zadanie_4.tex [11
 
-(./zadanie_4.tex [17
+
+]
+Overfull \vbox (58.95659pt too high) has occurred while \output is active []
 
 
-] [18]
-<./charts/chart_test3.png, id=321, 526.038pt x 328.062pt>
-File: ./charts/chart_test3.png Graphic file (type png)
-<use ./charts/chart_test3.png>
-Package pdftex.def Info: ./charts/chart_test3.png  used on input line 69.
-(pdftex.def)             Requested size: 360.0pt x 224.51086pt.
-) [19 <./charts/chart_test3.png>]
+[12]
+<./charts/test4photo1.png, id=248, 705.38531pt x 355.3275pt>
+File: ./charts/test4photo1.png Graphic file (type png)
+<use ./charts/test4photo1.png>
+Package pdftex.def Info: ./charts/test4photo1.png  used on input line 70.
+(pdftex.def)             Requested size: 352.69179pt x 177.6633pt.
+<./charts/test4photo2.png, id=249, 724.95844pt x 363.60844pt>
+File: ./charts/test4photo2.png Graphic file (type png)
+<use ./charts/test4photo2.png>
+Package pdftex.def Info: ./charts/test4photo2.png  used on input line 75.
+(pdftex.def)             Requested size: 362.47833pt x 181.80377pt.
+
+Overfull \hbox (2.47833pt too wide) in paragraph at lines 75--77
+ [][] 
+ []
+
+[13 <./charts/test4photo1.png> <./charts/test4photo2.png>]) [14]
 \openout2 = `zadanie_5.aux'.
 
- (./zadanie_5.tex
-[20
+
+(./zadanie_5.tex
+Overfull \hbox (10.50575pt too wide) in paragraph at lines 3--6
+\OT4/cmr/m/n/10.95 wcze-±niej za-im-ple-men-to-wa-ne-go al-go-ryt-mu 2-opt. Hi-
+po-te-z¡ star-to-w¡ jest stwier-
+ []
 
 
-] [21]
-<./charts/chart_test4_tsp.png, id=339, 399.456pt x 248.127pt>
-File: ./charts/chart_test4_tsp.png Graphic file (type png)
-<use ./charts/chart_test4_tsp.png>
-Package pdftex.def Info: ./charts/chart_test4_tsp.png  used on input line 98.
-(pdftex.def)             Requested size: 360.0pt x 223.62646pt.
-File: ./charts/chart_test4_tsp.png Graphic file (type png)
-<use ./charts/chart_test4_tsp.png>
-Package pdftex.def Info: ./charts/chart_test4_tsp.png  used on input line 103.
-(pdftex.def)             Requested size: 360.0pt x 223.62646pt.
- [22] [23 <./charts/chart_test4_tsp.png>]) [24]
+Overfull \hbox (8.68323pt too wide) in paragraph at lines 9--10
+\OT4/cmr/m/n/10.95 W tym te-±cie zo-sta-ªy wy-ko-rzy-sta-ne na-st¦-pu-j¡-ce in-
+stan-cje z bi-blio-te-ki \OT4/cmr/m/it/10.95 TSPLIB\OT4/cmr/m/n/10.95 : 
+ []
+
+[15
+
+
+]) [16]
 \openout2 = `zadanie_6.aux'.
 
  (./zadanie_6.tex
-Overfull \hbox (6.24718pt too wide) in paragraph at lines 5--6
-\OT4/cmr/m/n/10.95 Do te-go ba-da-nia u»y-to au-to-ma-tycz-nie wy-ge-ne-ro-wa-n
-ych gra-fów ty-pu \OT4/cmr/bx/n/10.95 EUC2D\OT4/cmr/m/n/10.95 .
+Overfull \hbox (16.19115pt too wide) in paragraph at lines 7--8
+\OT4/cmr/m/n/10.95 Ze wzgl¦-du na czy-tel-no±¢ wszyst-kie wy-ni-ki s¡ za-ª¡-czo
+-ne w pli-ku \OT4/cmr/bx/n/10.95 out[]test[]3.csv\OT4/cmr/m/n/10.95 . 
  []
 
-
-Overfull \hbox (7.89235pt too wide) in paragraph at lines 5--6
-\OT4/cmr/m/n/10.95 Roz-mia-ry gra-fów (ozna-cza-ne li-te-r¡ n) na-le-»¡ do zbio
--ru $\OML/plm/m/it/10.95 n \OMS/plsy/m/n/10.95 2 f\OT4/cmr/m/n/10.95 10\OML/plm
-/m/it/10.95 ; \OT4/cmr/m/n/10.95 15\OML/plm/m/it/10.95 ; \OT4/cmr/m/n/10.95 20\
-OML/plm/m/it/10.95 ; :::; \OT4/cmr/m/n/10.95 100\OMS/plsy/m/n/10.95 g$\OT4/cmr/
-m/n/10.95 .
- []
-
-<./charts/eucOPT.jpg, id=357, 622.57594pt x 339.51843pt>
-File: ./charts/eucOPT.jpg Graphic file (type jpg)
-<use ./charts/eucOPT.jpg>
-Package pdftex.def Info: ./charts/eucOPT.jpg  used on input line 41.
-(pdftex.def)             Requested size: 466.9308pt x 254.63818pt.
-
-Overfull \hbox (106.9308pt too wide) in paragraph at lines 41--43
- [][] 
- []
-
-[25
+<./charts/chart_test3_1.png, id=288, 362.007pt x 217.467pt>
+File: ./charts/chart_test3_1.png Graphic file (type png)
+<use ./charts/chart_test3_1.png>
+Package pdftex.def Info: ./charts/chart_test3_1.png  used on input line 10.
+(pdftex.def)             Requested size: 271.50458pt x 163.09982pt.
+[17
 
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 77--79
-
- []
-
-) [26 <./charts/eucOPT.jpg>] [27]
+ <./charts/chart_test3_1.png>]) [18]
 \openout2 = `zadanie_7.aux'.
 
- (./zadanie_7.tex
-<./charts/fullmatrixOPT.jpg, id=375, 594.72188pt x 362.10281pt>
-File: ./charts/fullmatrixOPT.jpg Graphic file (type jpg)
-<use ./charts/fullmatrixOPT.jpg>
-Package pdftex.def Info: ./charts/fullmatrixOPT.jpg  used on input line 38.
-(pdftex.def)             Requested size: 446.04031pt x 271.57643pt.
 
-Overfull \hbox (86.04031pt too wide) in paragraph at lines 38--40
- [][] 
- []
-
-[28
-
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 76--78
-
- []
-
-) [29 <./charts/fullmatrixOPT.jpg>] [30]
+No file zadanie_7.tex.
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 41.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 41.
- (./podsumowanie.aux (./zadanie_1.aux)
-(./zadanie_2.aux) (./zadanie_3.aux) (./zadanie_4.aux) (./zadanie_5.aux)
-(./zadanie_6.aux) (./zadanie_7.aux))
+(./podsumowanie.aux (./zadanie_1.aux) (./zadanie_2.aux) (./zadanie_3.aux)
+(./zadanie_4.aux) (./zadanie_5.aux) (./zadanie_6.aux) (./zadanie_7.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 41.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 41.
 Package rerunfilecheck Info: File `podsumowanie.out' has not changed.
-(rerunfilecheck)             Checksum: 3C775D0F03AFDA54E16D8D035DF8009A;3283.
+(rerunfilecheck)             Checksum: A5B95D4D5FCA8501F4F5114858341979;2513.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 41.
  ) 
 Here is how much of TeX's memory you used:
- 27623 strings out of 483075
- 666710 string characters out of 5963835
- 1127790 words of memory out of 5000000
- 41998 multiletter control sequences out of 15000+600000
- 542510 words of font info for 53 fonts, out of 8000000 for 9000
- 79 hyphenation exceptions out of 8191
- 78i,9n,136p,762b,573s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plms.enc} </home/radikey/.t
-exlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk>{/usr/share/tex
-live/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/font
-s/enc/dvips/pl/plme.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.
-enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plit.enc}</usr/share/texl
-ive/texmf-dist/fonts/type1/public/pl/plbx10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/pl/plbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/pl/plex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi10.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/pl/plr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/pl/plr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plr8.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/pl/plsy8.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/pl/plti10.pfb>
-Output written on podsumowanie.pdf (30 pages, 622576 bytes).
+ 27596 strings out of 483148
+ 666418 string characters out of 5965417
+ 1070545 words of memory out of 5000000
+ 41973 multiletter control sequences out of 15000+600000
+ 542426 words of font info for 53 fonts, out of 8000000 for 9000
+ 34 hyphenation exceptions out of 8191
+ 78i,10n,136p,737b,573s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plms.enc}{/usr/share/texliv
+e/texmf-dist/fonts/enc/dvips/pl/plmi.enc}{/usr/share/texlive/texmf-dist/fonts/e
+nc/dvips/pl/plme.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc
+}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plit.enc}</usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/pl/plbx10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/pl/plbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/pl
+ex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plmi10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/pl/plmi8.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/pl/plr10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/pl/plr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/p
+lr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/pl/plr8.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/pl/plsy10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/pl/plsy8.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/pl/plti10.pfb>
+Output written on podsumowanie.pdf (18 pages, 695358 bytes).
 PDF statistics:
- 467 PDF objects out of 1000 (max. 8388607)
- 405 compressed objects within 5 object streams
- 109 named destinations out of 1000 (max. 500000)
- 458 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 370 PDF objects out of 1000 (max. 8388607)
+ 318 compressed objects within 4 object streams
+ 95 named destinations out of 1000 (max. 500000)
+ 354 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,50 +1,37 @@
 \BOOKMARK [1][-]{section.1}{Wstep: }{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{Algorytm k-random}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Algorytm najblizszego sasiada: om\363wienie}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{Algorytm rozszerzonego najblizszego sasiada: om\363wienie}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{Algorytm 2-opt}{section.1}% 5
-\BOOKMARK [1][-]{section.2}{Przypadek Testowy 1- Najblizszy sasiad, a rozszerzony najblizszy sasiad- por\363wnanie wynik\363w oraz czas\363w wykonywania}{}% 6
-\BOOKMARK [2][-]{subsection.2.1}{Cel:}{section.2}% 7
-\BOOKMARK [2][-]{subsection.2.2}{Za\233ozenia:}{section.2}% 8
-\BOOKMARK [2][-]{subsection.2.3}{Wyniki: }{section.2}% 9
-\BOOKMARK [2][-]{subsection.2.4}{Wykresy: }{section.2}% 10
-\BOOKMARK [2][-]{subsection.2.5}{Wnioski: }{section.2}% 11
-\BOOKMARK [1][-]{section.3}{przypadek testowy 2}{}% 12
-\BOOKMARK [2][-]{subsection.3.1}{Cel: }{section.3}% 13
-\BOOKMARK [2][-]{subsection.3.2}{Za\233ozenia: }{section.3}% 14
-\BOOKMARK [2][-]{subsection.3.3}{Wyniki: }{section.3}% 15
-\BOOKMARK [2][-]{subsection.3.4}{Wykresy: }{section.3}% 16
-\BOOKMARK [2][-]{subsection.3.5}{Wnioski: }{section.3}% 17
-\BOOKMARK [2][-]{subsection.3.6}{Tabela czas\363w: }{section.3}% 18
-\BOOKMARK [1][-]{section.4}{Przypadek Testowy 3-Algorytm 2-opt: Zaleznosc wynik\363w od danych poczatkowych}{}% 19
-\BOOKMARK [2][-]{subsection.4.1}{Cel:}{section.4}% 20
-\BOOKMARK [2][-]{subsection.4.2}{Za\233ozenia:}{section.4}% 21
-\BOOKMARK [2][-]{subsection.4.3}{Wyniki: }{section.4}% 22
-\BOOKMARK [2][-]{subsection.4.4}{Wykresy: }{section.4}% 23
-\BOOKMARK [2][-]{subsection.4.5}{Wnioski: }{section.4}% 24
-\BOOKMARK [1][-]{section.5}{przypadek testowy 4}{}% 25
-\BOOKMARK [2][-]{subsection.5.1}{Cel: }{section.5}% 26
-\BOOKMARK [2][-]{subsection.5.2}{Za\233ozenia: }{section.5}% 27
-\BOOKMARK [2][-]{subsection.5.3}{Wyniki: }{section.5}% 28
-\BOOKMARK [2][-]{subsection.5.4}{Wykresy: }{section.5}% 29
-\BOOKMARK [2][-]{subsection.5.5}{Wnioski: }{section.5}% 30
-\BOOKMARK [1][-]{section.6}{przypadek testowy 5}{}% 31
-\BOOKMARK [2][-]{subsection.6.1}{Cel: }{section.6}% 32
-\BOOKMARK [2][-]{subsection.6.2}{Za\233ozenia: }{section.6}% 33
-\BOOKMARK [2][-]{subsection.6.3}{Wyniki: }{section.6}% 34
-\BOOKMARK [2][-]{subsection.6.4}{Wykresy: }{section.6}% 35
-\BOOKMARK [2][-]{subsection.6.5}{Wnioski: }{section.6}% 36
-\BOOKMARK [1][-]{section.7}{Testy statystyczne: EUC2D dla 2-opt i rozszerzonego sasiada}{}% 37
-\BOOKMARK [2][-]{subsection.7.1}{Cel:}{section.7}% 38
-\BOOKMARK [2][-]{subsection.7.2}{Za\233ozenia:}{section.7}% 39
-\BOOKMARK [2][-]{subsection.7.3}{Wyniki: }{section.7}% 40
-\BOOKMARK [2][-]{subsection.7.4}{Wykresy: }{section.7}% 41
-\BOOKMARK [2][-]{subsection.7.5}{Test statystyczny Wilcoxona: }{section.7}% 42
-\BOOKMARK [2][-]{subsection.7.6}{Wnioski: }{section.7}% 43
-\BOOKMARK [1][-]{section.8}{Testy statystyczne: FULLMATRIX dla 2-opt i rozszerzonego sasiada}{}% 44
-\BOOKMARK [2][-]{subsection.8.1}{Cel:}{section.8}% 45
-\BOOKMARK [2][-]{subsection.8.2}{Za\233ozenia:}{section.8}% 46
-\BOOKMARK [2][-]{subsection.8.3}{Wyniki: }{section.8}% 47
-\BOOKMARK [2][-]{subsection.8.4}{Wykresy: }{section.8}% 48
-\BOOKMARK [2][-]{subsection.8.5}{Test statystyczny Wilcoxona: }{section.8}% 49
-\BOOKMARK [2][-]{subsection.8.6}{Wnioski: }{section.8}% 50
+\BOOKMARK [2][-]{subsection.1.1}{Algorytm Tabu Search}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Przypadek Testowy 1 - Tabu Search - warianty tsp vs atsp}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Cel:}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Za\233ozenia:}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.3}{Wyniki: }{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.4}{Wykresy: }{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.5}{Wnioski: }{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Przypadek Testowy 2 - Tabu Search - zaleznosc PRD od liczby iteracji}{}% 9
+\BOOKMARK [2][-]{subsection.3.1}{Cel:}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.2}{Za\233ozenia:}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.3}{Wyniki: }{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.4}{Wykresy: }{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.5}{Wnioski: }{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Przypadek Testowy 3 - Tabu Search - Wp\233yw rozmiaru listy tabu na otrzymane wyniki}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Cel:}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.2}{Wykorzystane instancje: }{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.3}{Wyniki: }{section.4}% 18
+\BOOKMARK [2][-]{subsection.4.4}{Wykresy: }{section.4}% 19
+\BOOKMARK [2][-]{subsection.4.5}{Wnioski: }{section.4}% 20
+\BOOKMARK [1][-]{section.5}{Przypadek Testowy 4 - Tabu Search - Wp\233yw liczby rozpatrywanych sasiad\363w na otrzymane wyniki}{}% 21
+\BOOKMARK [2][-]{subsection.5.1}{Cel:}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.2}{Wyniki: }{section.5}% 23
+\BOOKMARK [2][-]{subsection.5.3}{Wykresy: }{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.4}{Wnioski: }{section.5}% 25
+\BOOKMARK [1][-]{section.6}{Przypadek Testowy 5 - Tabu Search - Test statystyczny}{}% 26
+\BOOKMARK [2][-]{subsection.6.1}{Cel:}{section.6}% 27
+\BOOKMARK [2][-]{subsection.6.2}{Za\233ozenia:}{section.6}% 28
+\BOOKMARK [2][-]{subsection.6.3}{Wykorzystane instancje: }{section.6}% 29
+\BOOKMARK [2][-]{subsection.6.4}{Test statystyczny Wilcoxona: }{section.6}% 30
+\BOOKMARK [2][-]{subsection.6.5}{Wnioski: }{section.6}% 31
+\BOOKMARK [1][-]{section.7}{Przypadek Testowy 6 - Tabu Search - zaleznosc PRD od maksymalnej liczby iteracji bez poprawy}{}% 32
+\BOOKMARK [2][-]{subsection.7.1}{Cel:}{section.7}% 33
+\BOOKMARK [2][-]{subsection.7.2}{Za\233ozenia:}{section.7}% 34
+\BOOKMARK [2][-]{subsection.7.3}{Wyniki: }{section.7}% 35
+\BOOKMARK [2][-]{subsection.7.4}{Wykresy: }{section.7}% 36
+\BOOKMARK [2][-]{subsection.7.5}{Wnioski: }{section.7}% 37

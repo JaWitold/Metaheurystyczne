@@ -4,8 +4,8 @@ import random
 import copy
 import os
 from dotenv import load_dotenv
-
 from generate import GraphGenerator
+import matplotlib.pyplot as plt
 
 
 class Graph:
@@ -23,6 +23,14 @@ class Graph:
     coordinates = dict()
     path = []
     
+    sbests_tabu = ([], [])
+    
+    max_iterations = 0
+    max_stagnation_iterations = 0
+    max_tabu_list_size = 0
+    iter = 0
+    neighborhood_size = 0
+    
     def __init__(self):
         self.read_data_from = {
             "FULL_MATRIX": self.read_data_from_full_matrix,
@@ -32,7 +40,7 @@ class Graph:
     
     def generate(self, variant, dimension, seed, upper_bound=100):
         generator = GraphGenerator(variant, dimension, seed, upper_bound)
-        self.matrix,self.coordinates = generator.generate()
+        self.matrix, self.coordinates = generator.generate()
         self.dimension = len(self.matrix)
         self.edge_weight_format = variant
     
@@ -98,7 +106,7 @@ class Graph:
     def show_matrix(self):
         for subset in self.matrix:
             print(subset)
-        self.draw()
+        # self.draw()
     
     def draw(self):
         if self.edge_weight_format == 'EUC_2D':
@@ -131,54 +139,55 @@ class Graph:
         # self.prd(cost)
     
     def nearest_neighbor(self, start):
-        #self.show_matrix()
-        min_dist=0
+        # self.show_matrix()
+        min_dist = 0
         path = [start]
-        matrix_copy=copy.deepcopy(self.matrix)
-        indexes=[x for x in range(self.dimension)]
-        while(len(path)!=self.dimension):
-            points=dict(zip(indexes,matrix_copy[start]))
-            neighbors=sorted(points.items(), key=lambda x: x[1])
-            for key,value in neighbors:
+        matrix_copy = copy.deepcopy(self.matrix)
+        indexes = [x for x in range(self.dimension)]
+        while len(path) != self.dimension:
+            points = dict(zip(indexes, matrix_copy[start]))
+            neighbors = sorted(points.items(), key=lambda x: x[1])
+            for key, value in neighbors:
                 if key not in path:
-                    start=key
+                    start = key
                     min_dist = min_dist + int(value)
                     path.append(key)
                     break
-        min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
+        min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension - 1]])
         # self.path = path
         # self.show_matrix()
         # self.show_solution(min_dist)
         # self.draw_solution()
         self.prd(min_dist)
     
-    #oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
+    # oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
     def extended_nearest_neighbor(self):
-        min_dist_total=sys.maxsize
-        starting_vertex=-1
-        path_total=[]
+        min_dist_total = sys.maxsize
+        starting_vertex = -1
+        path_total = []
         for start in range(self.dimension):
-            vertex=start
-            min_dist=0
+            vertex = start
+            min_dist = 0
             path = [start]
-            matrix_copy=copy.deepcopy(self.matrix)
-            indexes=[x for x in range(self.dimension)]
-            while(len(path)!=self.dimension):
-                points=dict(zip(indexes,matrix_copy[start]))
-                neighbors=sorted(points.items(), key=lambda x: x[1])
-                for key,value in neighbors:
+            matrix_copy = copy.deepcopy(self.matrix)
+            indexes = [x for x in range(self.dimension)]
+            while len(path) != self.dimension:
+                points = dict(zip(indexes, matrix_copy[start]))
+                neighbors = sorted(points.items(), key=lambda x: x[1])
+                for key, value in neighbors:
                     if key not in path:
-                        start=key
+                        start = key
                         min_dist = min_dist + int(value)
                         path.append(key)
                         break
-            min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension-1]])
-            if(min_dist_total>min_dist):
-                min_dist_total=min_dist
-                starting_vertex=vertex
-                path_total=copy.deepcopy(path)
+            min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension - 1]])
+            if (min_dist_total > min_dist):
+                min_dist_total = min_dist
+                starting_vertex = vertex
+                path_total = copy.deepcopy(path)
         pass
-        self.path=path_total
+        self.path = path_total
+        print(min_dist_total)
         # self.show_matrix()
         # print("Best start: ", starting_vertex)
         # self.show_solution(min_dist_total)
@@ -197,7 +206,8 @@ class Graph:
     
     def two_opt(self, param):
         path = [x for x in range(self.dimension)]
-        #path = [int(x) for x in param.split(",")]
+        random.shuffle(path)
+        # path = [int(x) for x in param.split(",")]
         if len(path) != self.dimension:
             print(f"path is too short, expected {self.dimension}")
             return
@@ -208,7 +218,7 @@ class Graph:
             for i in range(0, len(path) - 1):
                 for j in range(i + 1, len(path)):
                     # if j - i == 1: continue
-                    current_cost=self.cost(best)
+                    current_cost = self.cost(best)
                     new_route = path[:]
                     new_route[i:j] = reversed(new_route[i:j])
                     if self.cost(new_route) < current_cost:
@@ -218,9 +228,95 @@ class Graph:
         self.path = path
         cost = self.cost(self.path)
         # self.show_matrix()
-        # self.show_solution(cost)
+        self.show_solution(cost)
         # self.draw_solution()
-        self.prd(cost)
+        # self.prd(cost)
+    
+    def tabu(self, param):
+        # self.extended_nearest_neighbor()
+        # self.two_opt("None")
+        # s_best=self.path
+        params = [int(x) for x in param.split(",")]
+        self.max_iterations = params[0]
+        self.max_stagnation_iterations = params[1]
+        self.max_tabu_list_size = params[2]
+        self.neighborhood_size = params[3]
+        s_best = [x for x in range(self.dimension)]
+        random.shuffle(s_best)
+        best_path = copy.deepcopy(s_best)
+        best_candidate = copy.deepcopy(s_best)
+        no_opt_iterations = 0
+        tabu_list = [s_best]
+        best_cost = self.cost(s_best)
+        self.prd(best_cost)
+        while not self.stopping_condition():
+            self.iter += 1
+            s_neighborhood = self.get_neighbors(best_candidate)
+            best_candidate = s_neighborhood[0]
+            for sCandidate in s_neighborhood:
+                if sCandidate not in tabu_list and self.fitness(sCandidate) > self.fitness(best_candidate):
+                    best_candidate = sCandidate
+            # self.sbests_tabu[1].append(self.cost(best_candidate))
+
+            if self.fitness(best_candidate) > 1 / best_cost:
+                s_best = best_candidate
+                best_cost = self.cost(best_candidate)
+                self.prd(best_cost)
+            else:
+                no_opt_iterations += 1
+            if no_opt_iterations == self.max_stagnation_iterations:
+                best_path = copy.deepcopy(s_best)
+                random.shuffle(s_best)
+                no_opt_iterations = 0
+            tabu_list.append(best_candidate)
+            if len(tabu_list) > self.max_tabu_list_size:
+                tabu_list.pop(0)
+            # add data to plot
+            self.sbests_tabu[0].append(self.iter)
+            self.sbests_tabu[1].append(best_cost)
+        
+        if self.fitness(s_best) > 1 / best_cost:
+            best_path = copy.deepcopy(s_best)
+            best_cost = self.cost(s_best)
+        
+        # self.show_matrix()
+        self.path = best_path
+        self.show_solution(best_cost)
+        self.prd(best_cost)
+        self.plot_tabu()
+    
+    def plot_tabu(self):
+        plt.plot(self.sbests_tabu[0], self.sbests_tabu[1])
+        plt.show()
+    
+    def fitness(self, candidate):
+        return 1 / self.cost(candidate)
+    
+    def stopping_condition(self):
+        return self.iter >= self.max_iterations
+    
+    def get_neighbors(self, candidate):
+        neighbors = []
+        for i in range(0, len(candidate) // self.neighborhood_size):
+            # uncomment for swap
+            # new_candidate = copy.deepcopy(candidate)
+            mock_candidate = copy.deepcopy(candidate)
+            node_1 = random.randint(1, len(candidate) - 1)
+            # node_2 = node_1 - 1
+            node_2 = random.randint(node_1, len(candidate) - 1)
+            # swap
+            if node_1 == node_2:
+                continue
+            # print("NODES: {}, {}".format(node_1,node_2))
+            # invert
+            new_candidate = mock_candidate[:node_1]
+            to_reverse = mock_candidate[node_1:node_2]
+            new_candidate = mock_candidate[:node_1] + to_reverse[::-1] + mock_candidate[node_2:]
+            # Swap
+            # new_candidate[node_2], new_candidate[node_1] = new_candidate[node_1], new_candidate[node_2]
+            neighbors.append(new_candidate)
+        
+        return neighbors
     
     def show_solution(self, cost):
         print(f"Cost: {cost}")
@@ -238,14 +334,15 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(os.path.basename(self.filename))
+        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        print(f"reference value: {ref}")
+        # print(f"REF: {ref}; COST: {x}")
         result = 100 * (x - ref) / ref
-        print("PRD(x):{}%".format(result))
+        # print("PRD: {}%".format(result))
+        print(f"{self.iter}, {x}, {result}")
     
     @staticmethod
     def read_numbers(file):
@@ -261,5 +358,7 @@ class Graph:
             self.two_opt(param)
         elif algorithm == 'extended-nearest-neighbor':
             self.extended_nearest_neighbor()
+        elif algorithm == 'tabu':
+            self.tabu(param)
         else:
             print("Unsupported algorithm")

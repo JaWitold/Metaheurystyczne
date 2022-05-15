@@ -1,80 +1,25 @@
-\section{Testy statystyczne: EUC2D dla 2-opt i rozszerzonego sąsiada}
+\section{Przypadek Testowy 6 - Tabu Search - zależność PRD od maksymalnej liczby iteracji bez poprawy}
   \subsection{Cel:}
-    Bazując na wiedzy teoretycznej wiemy, iż 2-opt dla rozkładu miast spełniającego nierówność trójkatą powienien otrzymywać lepsze wyniki niż rozszerzony algorytm najbliższego sąsiada, ze względu na to, iż potrafi on dokonać przestawienia wierzchołków, aby nie dochodziło do potencjalnych przecieć na trasie. Celem tego etapu jest sprawdzenie, czy ta hipoteza jest zgodna z rzeczywistością.
-  \subsection{Założenia:}
-    Do tego badania użyto automatycznie wygenerowanych grafów typu \textbf{EUC2D}. Rozmiary grafów (oznaczane literą n) należą do zbioru $n \in \{10,15,20,...,100\}$. Dla algorytmu 2-opt element startowy został automatycznie wygenerowany.
+    W tej części zostaną ze sobą porównane PRD rozwiązania algorytmu Tabu Search w zależności od maksymalnej liczby iteracji bez poprawy.
+    \subsection{Założenia:}
+    Do badania tego przypadku zostały wykorzystane instancje grafów z paczki tsp. Dodatkowo maksymalna długość listy tabu równa 50, maksymalna liczba iteracji równa 200 oraz liczba sąsiadów równa 10\% wszystkich węzłów w grafie (zaokrąglona w dół). Ponad to dla każdej instancji ilość iteracji została ograniczona w zakresie od 10 do 100 z iteracjią co 10;
   \subsection{Wyniki: }
-
-
-  \begin{table}[H]
-    \begin{tabular}{|c | c | c |} 
-     \hline
-     n & RozszerzonySąsiad & 2-OPT \\ [0.5ex] 
-     \hline\hline
-      10 & 271 & 271 \\
-      15 & 300 & 300 \\
-      20 & 354 & 330 \\
-      25 & 408 & 387 \\
-      30 & 419 & 414 \\
-      35 & 444 & 439 \\
-      40 & 458 & 453 \\
-      45 & 537 & 513 \\
-      50 & 548 & 522 \\
-      55 & 573 & 526 \\
-      60 & 627 & 563 \\
-      65 & 670 & 598 \\ 
-      70 & 697 & 630 \\
-      75 & 696 & 656 \\
-      80 & 752 & 680 \\
-      85 & 801 & 712 \\
-      90 & 835 & 757 \\
-      95 & 949 & 798 \\
-      100 & 877 & 821 \\
-
-     \hline
-    \end{tabular}
-    \caption{Funkcje celu dla wybranych algorytmów.}
-    \end{table}
-
+    Ze względu na czytelność wszystkie wyniki są załączone w pliku \textbf{out\_test\_3.csv}.
   \subsection{Wykresy: }
-  \begin{figure}[H]
-      \includegraphics[scale=0.75]{eucOPT}
+    \begin{figure}[H]
+      \includegraphics[scale=0.75]{chart_test3_1.png}
       \centering
-      \caption{Funkcja celu dla 2-opt dla różnych startowych permutacji}
+      \caption{zależność PRD od maksymalnej liczby iteracji bez poprawy}
     \end{figure}
+    
+    Na wykresach przedstawione są średnie wartości PRD dla badanych danych.
 
+    Odchylenie standardowe oraz błąd standardowy zostały obliczone według wzorów: \\
+    Odchylenie standardowe:
+    \[ \sigma = \sqrt{\frac{\sum_{n = 1}^{10}(\bar{x} - x_n)^2}{10}} \]
+    Błąd standardowe:
+    \[ \sigma_{\bar{x}} = \frac{\sigma}{\sqrt{10}} \]
 
-
-  \subsection{Test statystyczny Wilcoxona: }
-    \textbf{Hipoteza zerowa: $OPT =< ENN$}, gdzie OPT oznacza algorytm 2-opt, a ENN- rozszerzony algorytm najbliższego sąsiada. \\
-    \textbf{Hipoteza alternatywna: $OPT > ENN$ }
-    \begin{table}
-    \begin{tabular}{|c | c | c | c | c | c |} 
-     \hline
-     Pair & OPT & ENN & Abs.Diff & Rank & Sign \\ [0.5ex] 
-     \hline\hline
-      5 & 414 & 419 & 5 & 2 & -1 \\
-      6 & 439 & 444 & 5 & 2 & -1 \\
-      7 & 453 & 458 & 5 & 2 & -1 \\
-      4 & 387 & 408 & 21 & 4 & -1 \\
-      3 & 330 & 354 & 24 & 5.5 & -1 \\
-      8 & 513 & 537 & 24 & 5.5 & -1 \\
-      9 & 522 & 548 & 26 & 7 & -1 \\
-      14 & 656 & 696 & 40 & 8 & -1 \\
-      10 & 526 & 573 & 47 & 9 & -1 \\
-      11 & 563 & 627 & 64 & 11 & -1 \\
-      13 & 630 & 697 & 67 & 12 & -1 \\
-      12 & 598 & 670 & 72 & 13.5 & -1 \\
-      15 & 680& 752 & 72 & 13.5 & -1 \\
-      17 & 757 & 835 & 78 & 15 & -1 \\
-      16 & 712 & 801 & 89 & 16 & -1 \\
-      18 & 798 & 949 & 151 & 17 & -1 \\
-     \hline
-    \end{tabular}
-    \caption{Tabela rang dla testu Wilcoxona}
-    \end{table}
-
-    $W_{-} = 153$.\\
-    $W_{+} = 0$. \\
   \subsection{Wnioski: }
-    Wartość krytyczna $\alpha = 0.05$. Dla tego typu statystyk $T_{crit}=41$ (dana z tabeli dla hipotez "o jednym ogonie"). Hipoteza zerowa jest odrzucona, gdy $ T \leq 41 $. U nas $T=0$, jako minimum z $W_{-} i W_{+}$, więc hipoteza zerowa zostaje odrzucona. Jest wystarczająco powodów na to, aby uważać, iż różnica median jest większa od 0. 
+    Zauważmy, że dla danych testowych poprawa jakości rozwiązania względem zwiększania maksymalnej liczby iteracji nie jest wprost rosnąca/malejąca. Jednak można zauważyć że większa większa liczba iteracji bez poprawy w zakresie \{10, 40\} wpływa na poprawe jakości rozwiązania. Przyglądając się poszczególnym przypadkom można zauważyć takie w których zmiana maksymalnej liczby iteracji bez poprawy nie zmienia jakości rozwiązania, jak i takie przypadki gdzie jakość rozwiązania stabilizuje się.
+

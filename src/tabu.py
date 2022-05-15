@@ -2,22 +2,22 @@ from copy import deepcopy
 
 from graph import Graph
 import random
+import sys
 
 
 class Tabu(Graph):
-    max_iterations = 1000
+    max_iterations = 10000
     max_stagnation_iterations = 10
-    max_tabu_list_size = 7
-    neighborhood_size = 10
+    max_tabu_list_size = 100
+    neighborhood_size = 5
     
     def __init__(self):
         self.iter = 0
         Graph.__init__(self)
     
     def tabu(self):
-        s_best = [x for x in range(self.dimension)]
+        s_best = [13, 12, 26, 25, 46, 28, 29, 1, 6, 41, 20, 30, 17, 16, 2, 18, 40, 7, 8, 9, 44, 31, 48, 0, 21, 22, 19, 49, 15, 45, 24, 3, 5, 4, 23, 47, 37, 36, 43, 33, 34, 35, 38, 39, 14, 42, 32, 50, 11, 27, 10, 51]
         best_path = deepcopy(s_best)
-        random.shuffle(s_best)
         best_candidate = s_best
         no_opt_iterations = 0
         tabu_list = [s_best]
@@ -38,9 +38,7 @@ class Tabu(Graph):
             if no_opt_iterations > self.max_stagnation_iterations:
                 if self.fitness(s_best) > self.fitness(best_path):
                     cost = self.cost(best_path)
-                    print(cost)
                     best_path = deepcopy(s_best)
-                    tabu_list.clear()
                 random.shuffle(s_best)
             tabu_list.append(best_candidate)
             if len(tabu_list) > self.max_tabu_list_size:
@@ -57,7 +55,6 @@ class Tabu(Graph):
     def stopping_condition(self):
         return self.iter > self.max_iterations
     
-    # returns 10% of neighbourhood
     def get_neighbors(self, candidate):
         neighbors = []
         for i in range(0, len(candidate) // self.neighborhood_size):
@@ -76,5 +73,5 @@ class Tabu(Graph):
 
 if __name__ == "__main__":
     tab = Tabu()
-    tab.generate("EUC_2D", 50, 100)
+    tab.read(sys.argv[1])
     print(tab.tabu())

@@ -1,25 +1,30 @@
 \section{Wstęp: }
-\subsection{Algorytm k-random}
-  Algorytm k-random polega na wygenerowaniu losowego dopuszczalnego rozwiązania (co w naszym przypadku, gdzie wszystkie grafy są gęste, oznacza wybranie losowej permutacji wierzchołków) i wyznaczenie dla niego funkcji celu. Ów schemat powtarzamy k razy, z czego wybieramy najmniejszą drogę co do wartości.
+\subsection{Algorytm Tabu Search}
+  Algorytm Tabu Search jest metaheurystyką opierającą się na przeszukiwaniu przestrzeni
+  stworzonej ze wszystkich możliwych rozwiązań, za pomocą sekwencji ruchów. Istotą ów algorytmu 
+  jest istnienie ruchów niedozwolonych (czyli ruchów tabu). Dzięki swojej strukturze algorytm
+  unika ciągłego rozpatrywania jednego optimum lokalnego. \\
+  Nasza implementacja przewiduje dwa sposoby determinowania sąsiedztwa: poprzez ruchy
+  \textbf{swap} oraz \textbf{invert}. Ruchy \textbf{swap} polegają na zamienianiu pozycjami
+  dwóch miast z danej permutacji, natomiast ruchy typu \textbf{invert} polegają na odwróceniu kolejności
+  w jakiej występują wszystkie miasta w danej permutacji między dwoma losowo wybranymi indeksami.\\
 
-  \textbf{Złożoność obliczeniowa:} Procedura \textit{k-random} wykonuje n razy funkcję \textit{cost}, która działa w czasie liniowym. Dodatkowo do generowania nowych rozwiązań korzystamy z wbudowanej biblioteki pythona o nazwie \textit{random}, która zawiera funkcję \textit{shuffle}, której złożoność obliczeniowa wynosi O(n), gdyż korzysta z \textbf{"Fisher–Yates-shuffle"}. Ostatecznie więc, złożoność obliczeniowa tej metody wynosi $O(k*n)$.
-
-  \textbf{Złożoność pamięciowa: } Procedura \textit{k-random} generuje n-elementową permutację wierzchołków w formie listy. Następnie w specjalnej zmiennej przechowywana jest lista o najmniejszej funkcji celu, stąd ostatecznie nasza funkcje składa się z dwóch list o długości n. Wniosek: O(n)
-
-\subsection{Algorytm najbliższego sąsiada: omówienie}
-  Algorytm najbliższego sąsiada jest algorytmem z grupy algorytmów zachłannych- wybiera lokalnie najlepsze rozwiązanie, w ten sposób budując pełne rozwiązanie. 
-
-  \textbf{Złożoność obliczeniowa:} Procedura \textit{nearestneighbor} wykonuje się aż do momentu, gdy cała lista \textit{path} zostanie zapełniona. W każdym kroku dodajemy do niej jeden wierzchołek, więc zewnętrzny while wykonuje się dokładnie n razy. Następnie wewnątrz while'a przechodzimy liniowo po strukturze w poszukiwaniu sąsiada, do której jeszcze nie dotarliśmy(złożoność liniowa), jednakże dodatkowo dokonuje sortowania wierzchołków w celu ułatwienia iterowania po sąsiadach. Do sortowania korzystamy z wbudowanej funkcji \textit{sorted}, która wykonuje się w czasie $O(n*logn)$. Ostatecznie otrzymujemy złożonośc obliczeniową worst-case na poziomie $O(n^{2}*logn)$.
-
-  \textbf{Złożoność pamięciowa: }
-    Wewnątrz algorytmu dokonujemy tworzenia dodatkowe słownika, stąd wnioskujemy, iz złożnośc pamięciowa tego algorytmu jest równa O(n).
-\subsection{Algorytm rozszerzonego najbliższego sąsiada: omówienie}
-  Algorytm rozszerzonego najbliższego sąsiada polega na oduzależnieniu działania algorytmu od wyboru wierzchołka początkowego poprzez wykonanie podstawowego sąsiada dla wszystkich wierzchołków startowych
-  \textbf{Złożność: }
-    Algorytm wykorzystuje wszystkie funkcje algorytmu najbliższego sąsiada z tą różnicą, iż iteruje po wszystkich wierzchołkach, których jest dokładnie n, dlatego złożoność obliczeniowa tego algorytmu jest równa $O(n^3*logn)$. Złożoność pamięciowa nie ulega zmianom.
-\subsection{Algorytm 2-opt}
-  Algorytm 2-opt jest algorytmem, który korzysta z własności przestrzeni euklidesowych zwanej nierównością trójkatą. Zauważa, iż jeśli drogi są ze sobą "splecione" to ich rozwinięcie swodouje zmniejszenie funkcji celu. Na tej podstawie posiadając permutację wejściową dokonujemy inwersji pewnej części tablicy w oczekiwaniu, iż doszło do takowych rozplątań.
-    \textbf{Złożoność obliczeniowa:}
-      Ze względu na występującą pętle while, która wykonuje się do momentu, aż nie natrafimy na ulepszenie aktualnej permutacji bardzo trudno określić złożoność obliczeniową tego algorytmu. Na podstawie testów dla przestrzeni Euklidesowy wnioskujemy, iż ów algorytm może pracować nawet w złożoności $O(n^{3})$. Sytuacja komplikuje się, gdy przechodzimy w przestrzenie, które nie spełniają nierówności trójkątą. Intuicja może nam podpowiadać, iż w tej sytuacji możemy osiągnąć aż wykładniczą złożoność w najgorszym przypadku, jednakże żadne z naszych testów nie potwierdziły tej tezy.
-    \textbf{Złożoność pamięciowa:}
-      Ze względu na to, iż w procedurze tworzymy jedną listę n elementową przechowującą aktualną permutację, i jedną listę n elementową przechowującą najlepszą permutację, złożoność pamięciowa sprowadza się do O(n).
+ \textbf{Złożoność obliczeniowa: }\\
+  Główna pętla algorytmu odbywa się aż do momentu osiągnięcia kryterium zatrzymującego pracę. 
+  W naszej implementacji jest to liczba iteracji, która jest podawana przez użytkownika
+  w momencie uruchomienia programu. Uznajemy więc, iż liczba iteracji jest liczbą stałą.
+  Następnie odbywa się generowanie sąsiedztwa dla obecnej permutacji. Generowanie sąsiedztwa odbywa się w pętli 
+  for, której liczba iteracji jest podawana przez użytkownika w momencie uruchomienia programu.Na potrzeby ów analizy
+  ustalmy, iż użytkownik generuje liczbę sąsiadów równą liczbie miast dla danej instancji (jest to zalecane rozwiązanie dla większych instancji). Po dokonaniu powyższego założenia 
+  zauważamy, iż pojedyncza realizacja funkcji generującej sąsiadów wykonuje się w czasie liniowym (podobnie jak w poprzednim zadaniu, wbudowana funkcja \textit{reverse}
+  w języku python wykonuje się w \textbf{czasie liniowym}, poza ów funkcją wykonywane są jedynie takie operacje jak losowanie, o stałym czasie realizacji, czy kopiowanie tablicy, które 
+  również jest realizowane w czasie liniowym). Ostatecznie wnioskujemy, iż złożoność obliczeniowa funkcji \textit{get neighbors} wynosi $O(n^{2})$.
+  Następnie dochodzi do porównania wyników otrzymanych przez funkcję \textit{fitness} (która jest odwrotnością funkcji kosztu) dla każdego z wygenerowanych sąsiadów.
+  Biorąc pod uwagę, iż liczba sąsiadów jest liniowo zależna od liczby miast oraz funkcja \textit{cost} wykonuje się w czasie liniowym, dokonanie sprawdzenia, czy któryś z sąsiadów
+  zwraca lepszy wynik niż aktualna permutacja również odbywa się w złożoności $O(n^{2})$. Wszystkie następne operacje wykonywane w głonej pętli to operacje 
+  przypisania bądź porównania, które odbywają się w czasie stałym. Dodatkowo funkcja \textit{shuffle} również odbywa się w czasie liniowym.\\
+  \textbf{Wniosek:} Funkcja \textit{tabu} realizowana jest w czasie $O(n^{2})$.\\
+ \textbf{Złożoność pamięciowa: }\\
+  Algorytm w swoim procesie często manewruje permutacjami miast, stąd wiemy, iż złożoność pamięciowa jest liniowo zależna od liczby miast. Jedynym wyjątkiem
+  jest lista sąsiadów (gdzie w zależności od wprowadzonych przez użytkownika danych trzymamy odpowiednią liczbę permutacji) oraz lista tabu, która również zależy od wprowadzonych
+  danych. Oznaczając jako k większą z wartości sąsiedztwa oraz pojemności listy tabu stwierdzamy, iż złożoność pamięciowa funkcji \textit{tabu} wynosi $O(k*n)$

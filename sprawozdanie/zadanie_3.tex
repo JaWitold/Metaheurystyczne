@@ -1,88 +1,96 @@
-\section{Przypadek Testowy 3-Algorytm 2-opt: Zależność wyników od danych początkowych}
-	\subsection{Cel:}
-    Algorytm 2-opt bazuje na początkowej, ustalonej permutacji i na jej podstawie próbuje uzyskać lepszy wynik poprzez inwersję odpowiednich przedziałów. Celem tej części będzie sprawdzenie, jak duży wpływ ma dobór początkowej permutacji do otrzymanych wyników oraz jaki ma to wpływ na czas wykonywania algorytmu
-
-  \subsection{Założenia:}
-    Do tego badania użyto automatycznie wygenerowanych grafów typu \textbf{EUC2D}. Rozmiary grafów (oznaczane literą n) należą do zbioru $n \in \{10,15,20,...,100\}$. Do testów przygotowano 4 wartości początkowe:
-    \begin{itemize}
-      \item Permutację losową
-      \item Permutację otrzymaną przez uruchomienie algorytmu najbliższego sąsiada na wylosowanym wierzchołku
-      \item Permutację otrzymaną przez uruchomienie rozszerzonego algorytmu najbliższego sąsiada
-      \item Ciąg $i \in \{1,2,...n\} $
-    \end{itemize}
+\section{Przypadek Testowy 3 - Tabu Search - Wpływ rozmiaru listy tabu na otrzymane wyniki}
+  \subsection{Cel:}
+    Celem tego testu jest sprawdzenie w jaki sposób rozmiar listy tabu oddziałuje na otrzymany wynik. 
+    Do wykonania tego testu wykorzystano instancje znajdujące się w bibliotece \textit{TSPLIB}.
+    Dla każdego testu wykonano 1000 iteracji z maksymalną stagnacją równą 20 iteracji bez poprawy. 
+    Dodatkowo liczba sąsiadów wynosi tyle samo, ile wystepuje miast w danej instancji. \\
+    Sprawdzane rozmiary listy tabu należą do zbioru $k \in \{\sqrt{n}-5,\sqrt{n}-2,\sqrt{n},\sqrt{n}+2,\sqrt{n}+5$\}. \\
+    Wartości pierwiastka są zaokrąglane \textbf{W DÓŁ} do najbliższej liczby całkowitej.
+  \subsection{Wykorzystane instancje: }
+  W tym teście zostały wykorzystane następujące instancje z biblioteki \textit{TSPLIB}:
+  \begin{enumerate}
+    \item berlin52.tsp
+    \item bier127.tsp
+    \item eil76.tsp
+    \item gr120.tsp 
+    \item gr48.tsp
+    \item hk48.tsp
+    \item pr107.tsp
+    \item pr76.tsp
+    \item st70.tsp
+    \item u159.tsp
+  \end{enumerate}
   \subsection{Wyniki: }
-
-    \begin{table}[H]
-    \begin{tabular}{|c | c | c | c | c |} 
+  Otrzymane wyniki przedstawia poniższa tabela: \\
+  \textbf{Uwaga:} Ze względow objętościowych w sprawozdaniu zostały zawarte jedyne informacje na temat pojedynczego testu
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{||c c c||} 
      \hline
-     n & Losowa & Sąsiad & Rozszerzony & Podstawowa \\ [0.5ex] 
+     Instancja & Koszt & Rozmiar Tabu\\ [0.5ex] 
      \hline\hline
-      10 &  276 & 271 & 271 & 271 \\
-      15 &  300 & 300 & 300 & 308 \\
-      20 &  337 & 332 & 330 & 330 \\
-      25 &  399 & 391 & 387 & 392 \\
-      30 &  434 & 416 & 414 & 430 \\
-      35 &  445 & 457 & 439 & 450 \\
-      40 &  482 & 476 & 453 & 490 \\
-      45 &  550 & 527 & 513 & 556 \\
-      50 &  572 & 521 & 522 & 584 \\
-      55 &  562 & 528 & 526 & 547 \\
-      60 &  571 & 563 & 563 & 626 \\
-      65 &  631 & 598 & 598 & 663 \\
-      70 &  670 & 552 & 630 & 668 \\
-      75 &  651 & 642 & 656 & 663 \\
-      80 &  691 & 709 & 680 & 703 \\
-      85 &  751 & 744 & 712 & 726 \\ 
-      90 &  833 & 766 & 757 & 833 \\
-      95 &  855 & 786 & 798 & 848 \\ 
-      100 & 848 & 827 & 821 & 832 \\
-
+     berlin52 &	8865	& 2 \\
+     berlin52	& 8905	& 5 \\
+     berlin52	& 8979	& 7 \\
+     berlin52 &	9314	& 9 \\
+     berlin52 &	9026	& 12 \\ 
+     bier127 & 135148  & 6 \\
+     bier127 & 133727 & 9 \\
+     bier127 & 133711 & 11\\
+     bier127 & 131323 & 13\\
+     bier127 & 131445 & 16\\
+     eil76 & 588 & 3\\
+     eil76 & 571 & 6\\
+     eil76 & 579 & 8\\
+     eil76 & 572 & 10\\
+     eil76 & 593 & 13\\
+     gr120.tsp & 7765  & 5\\ 
+     gr120.tsp & 7383 & 8\\ 
+     gr120.tsp & 7461 & 10\\ 
+     gr120.tsp & 7509 & 12\\ 
+     gr120.tsp & 7370 & 15\\ 
+     gr48 & 5269 & 1 \\
+     gr48 & 5303 & 4 \\
+     gr48 & 5278 & 6 \\
+     gr48 & 5336 & 8 \\
+     gr48 & 5231 & 11 \\
+     hk48 & 12223 & 1 \\
+     hk48 & 12356 & 4 \\
+     hk48 & 11951 & 6 \\
+     hk48 & 12197 & 8 \\
+     hk48 & 12614 & 11 \\
+     pr107 & 50950 & 5 \\
+     pr107 & 51262 & 8 \\
+     pr107 & 50772 & 10 \\
+     pr107 & 50859 & 12 \\
+     pr107 & 51033 & 15 \\
+     pr76 & 112189 & 3 \\
+     pr76 & 115826 & 6 \\
+     pr76 & 113237 & 8 \\
+     pr76 & 118227 & 10 \\
+     pr76 & 112758 & 13 \\
+     st70 & 702 & 3 \\
+     st70 & 697 & 6 \\ 
+     st70 & 711 & 8 \\
+     st70 & 703 & 10 \\
+     st70 & 703 & 13 \\
+     u159 & 43396 & 5 \\
+     u159 & 43338 & 8 \\
+     u159 & 43299 & 10 \\
+     u159 & 43151 & 12 \\
+     u159 & 43171 & 15\\
      \hline
     \end{tabular}
-    \caption{Funkcje celu dla zadanych grafów przy odpowiednich warunkach początkowych.}
+    \caption{Tabela przedstawiająca otrzymane wyniki}
     \end{table}
-
-
-    \begin{table}[H]
-    \begin{tabular}{|c | c | c | c | c |} 
-     \hline
-     n & Losowa & Sąsiad & Rozszerzony & Podstawowa \\ [0.5ex] 
-     \hline\hline
-      10 & 0.001 & 0.001 & 0.0007 & 0.004 \\
-      15 & 0.015 & 0.006 & 0.002 & 0.025 \\
-      20 & 0.072 & 0.025 & 0.016 & 0.073 \\
-      25 & 0.142 & 0.042 & 0.031 & 0.201 \\
-      30 & 0.350 & 0.036 & 0.035 & 0.363 \\
-      35 & 0.720 & 0.258 & 0.058 & 0.756 \\
-      40 & 1.230 & 0.411 & 0.081 & 1.314 \\
-      45 & 2.106 & 0.705 & 0.234 & 2.274 \\
-      50 & 3.211 & 0.473 & 0.417 & 3,319 \\
-      55 & 5,068 & 1,194 & 0,994 & 5,723 \\
-      60 & 7,075 & 1,531 & 1,544 & 7,512 \\
-      65 & 9,536 & 1,887 & 1,883 & 11,659 \\ 
-      70 & 3,957 &  1,922 & 2,811 & 15,471 \\
-      75 & 21,451 &  3,926 & 1,874 & 20,245 \\
-      80 & 23,508 &  6,597 & 3,218 & 27,021 \\
-      85 & 30,458 &  5,715 & 4,584 & 30,862 \\
-      90 & 38,122 &  5,982 & 4,108 & 41,256 \\
-      95 & 4,621 &  15,187 &  6,415 & 50,381 \\
-      100 & 63,692 &  12,296 &  8,039 & 64,398 \\
-
-     \hline
-    \end{tabular}
-    \caption{Czas wykonania algorytmów dla zadanych grafów przy odpowiednich warunkach początkowych.}
-    \end{table}
-
   \subsection{Wykresy: }
   \begin{figure}[H]
-      \includegraphics[scale=0.75]{droga2opt}
-      \centering
-      \caption{Funkcja celu dla 2-opt dla różnych startowych permutacji}
-    \end{figure}
-    \begin{figure}[H]
-      \includegraphics[scale=0.7]{czas2opt}
-      \centering
-      \caption{Czas dla 2-opt dla różnych startowych permutacji}
-    \end{figure}
+    \includegraphics[scale=0.5]{test4photo3.png}
+    \centering
+    \caption{zależność funkcji kosztu od rozmiaru tablicy tabu dla podanych instancji}
+  \end{figure}
   \subsection{Wnioski: }
-  Mimo podobnych wyników dla wszystkich permutacji startowych zauważamy, iz w rankingu czasowym bardzo dobrze sprawują się permutacje, które wynikają z działania algorytmu najbliższego sąsiada. Dla początkowych permutacji w formie posortowanego ciągu lub wygenerowanych losowo zauważamy złożonośc ponadliniową.
+  W wykonanych testach zauważyliśmy brak większych zalezności między długością listy tabu a otrzymanymi wynikami. 
+  Brak klarownych rezultatów może być związany z niewielkimi rozmiarami, dla których były wykonywane testy, bądź z niewystarczającą
+  liczbą iteracji algorytmu tabu.
+  
