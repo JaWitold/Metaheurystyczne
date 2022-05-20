@@ -33,7 +33,11 @@ class Population(Graph):
         self.populationMaxSize = 128
     
     def populate(self, param):
-        self.populationMaxSize = param
+        params = [float(x) for x in param.split(",")]
+        self.MAX_ITERATIONS = int(params[0])
+        self.MUTATION_RATE = params[1]
+        self.SELECTION_RATE = params[2]
+        self.populationMaxSize = int(params[3])
         # generate first generation
         self.population = self.generate_population()
         
@@ -142,7 +146,7 @@ class Population(Graph):
     
     def run(self, algorithm, param):
         if algorithm == 'genetic':
-            self.populate(int(param))
+            self.populate(param)
         elif algorithm == "k-random":
             self.k_random_method(int(param))
         elif algorithm == "nearest-neighbor":
