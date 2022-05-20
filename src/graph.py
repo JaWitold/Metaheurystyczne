@@ -25,7 +25,7 @@ class Graph:
     
     sbests_tabu = ([], [])
     
-    max_iterations = 0
+    MAX_ITERATIONS = 0
     max_stagnation_iterations = 0
     max_tabu_list_size = 0
     iter = 0
@@ -237,7 +237,7 @@ class Graph:
         # self.two_opt("None")
         # s_best=self.path
         params = [int(x) for x in param.split(",")]
-        self.max_iterations = params[0]
+        self.MAX_ITERATIONS = params[0]
         self.max_stagnation_iterations = params[1]
         self.max_tabu_list_size = params[2]
         self.neighborhood_size = params[3]
@@ -293,7 +293,7 @@ class Graph:
         return 1 / self.cost(candidate)
     
     def stopping_condition(self):
-        return self.iter >= self.max_iterations
+        return self.iter >= self.MAX_ITERATIONS
     
     def get_neighbors(self, candidate):
         neighbors = []

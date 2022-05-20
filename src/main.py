@@ -1,8 +1,8 @@
 import sys
 from graph import Graph
-
+from genetic import Population
 mode = sys.argv[1]
-i = Graph()
+i = Population()
 
 if mode == "generate":
     algorithm = sys.argv[2]
