@@ -21,9 +21,9 @@ class Member:
 
 
 class Population(Graph):
-    MAX_ITERATIONS: int = 1000
-    SELECTION_RATE: float = 0.7
-    MUTATION_RATE: float = 0.05
+    MAX_ITERATIONS: int = 100000
+    SELECTION_RATE: float = 0.6
+    MUTATION_RATE: float = 0.01
     
     population: list[Member] = []
     iterations: int = 0
@@ -32,7 +32,8 @@ class Population(Graph):
         super().__init__()
         self.populationMaxSize = 128
     
-    def populate(self):
+    def populate(self, param):
+        self.populationMaxSize = param
         # generate first generation
         self.population = self.generate_population()
         
@@ -46,10 +47,10 @@ class Population(Graph):
         
         # get best member
         best_path = self.find_best()
-        best_cost = self.cost(best_path)
+        best_cost = self.cost(best_path.dna)
         
         # show results
-        self.path = best_path
+        self.path = best_path.dna
         self.show_solution(best_cost)
         self.prd(best_cost)
     
@@ -141,7 +142,7 @@ class Population(Graph):
     
     def run(self, algorithm, param):
         if algorithm == 'genetic':
-            self.populate()
+            self.populate(int(param))
         elif algorithm == "k-random":
             self.k_random_method(int(param))
         elif algorithm == "nearest-neighbor":
