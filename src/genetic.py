@@ -1,11 +1,10 @@
 from graph import Graph
+import copy
 import math
 import random
 
 
 class Member:
-    max_cost: int = 0
-    
     def __init__(self, dna: list[int]):
         self.dna = dna
         self.cost = 0
@@ -13,11 +12,9 @@ class Member:
     
     def set_cost(self, cost: int):
         self.cost = cost
-        if cost > self.max_cost:
-            self.max_cost = cost
-    
-    def normalize(self):
-        self.normalized_cost = self.cost / self.max_cost
+
+    def normalize(self, max_cost):
+        self.normalized_cost = self.cost / max_cost
 
 
 class Population(Graph):
@@ -40,7 +37,6 @@ class Population(Graph):
         self.populationMaxSize = int(params[3])
         # generate first generation
         self.population = self.generate_population()
-        
         # do some things
         while not self.stopping_condition():
             # selection, crossover, mutation
@@ -59,14 +55,17 @@ class Population(Graph):
         self.prd(best_cost)
     
     def stopping_condition(self):
-        return self.iterations < self.MAX_ITERATIONS
+        return self.iterations > self.MAX_ITERATIONS
     
     def selection(self, population: list[Member]) -> list[Member]:
         # normalize costs
+        for a in population:
+            a.set_cost(self.cost(a.dna))
+        
         m = self.find_worst()
-        Member.max_cost = m.cost
+        max_cost = m.cost
         for p in population:
-            p.normalize()
+            p.normalize(max_cost)
         
         # selection
         new_population = []
@@ -92,26 +91,40 @@ class Population(Graph):
             dna1, dna2 = p1.dna, p2.dna
             # PMX
             crossover_point = random.randint(0, len(dna1))
-            new_dna = dna1
-            # mamy wyznaczony punkt przecięcia
-            # przepisz na i-tym miejscu dna1 wartość z itego miejsca dna2
-            # znajdz to co było na i-tym miejscu dna2 w dna1 i podstaw tam to co dotychczas było na i-tym miejscu w dna1
+            new_dna = copy.deepcopy(dna1)
             for i in range(0, crossover_point):
-                p = new_dna[i]
+                p = dna1[i]
                 q = dna2[i]
-                new_dna[i] = dna2[i]
-                new_dna[new_dna.index[q]] = p
+                new_dna[i] = q
+                new_dna[new_dna.index(q)] = p
             new_population.append(Member(new_dna))
         return new_population
     
     def mutation(self, population: list[Member]) -> list[Member]:
+        # SWAP
+        # for s in population:
+        #     if self.MUTATION_RATE < random.random():
+        #         e1, e2 = random.choices(s.dna, k=2)
+        #         i1, i2 = s.dna.index(e1), s.dna.index(e2)
+        #         s.dna[i1], s.dna[i2] = s.dna[i2], s.dna[i1]
         for s in population:
-            if self.MUTATION_RATE < random.random():
-                e1, e2 = random.choices(s.dna, k=2)
-                i1, i2 = s.dna.index(e1), s.dna.index(e2)
-                s.dna[i1], s.dna[i2] = s.dna[i2], s.dna[i1]
+            # uncomment for swap
+            # new_candidate = copy.deepcopy(candidate)
+            mock_candidate = copy.deepcopy(s.dna)
+            node_1 = random.randint(1, len(s.dna) - 1)
+            # node_2 = node_1 - 1
+            node_2 = random.randint(node_1, len(s.dna) - 1)
+            # swap
+            if node_1 == node_2:
+                continue
+            # print("NODES: {}, {}".format(node_1,node_2))
+            # invert
+            to_reverse = mock_candidate[node_1:node_2]
+            new_candidate = mock_candidate[:node_1] + to_reverse[::-1] + mock_candidate[node_2:]
+            population.remove(s)
+            population.append(Member(new_candidate))
         return population
-        
+
     def find_best(self) -> Member:
         best = self.population[0]
         best_cost = self.cost(best.dna)

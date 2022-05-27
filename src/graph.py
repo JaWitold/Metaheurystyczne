@@ -339,10 +339,10 @@ class Graph:
             print("reference value not found in .env")
             return
         ref = int(ref)
-        # print(f"REF: {ref}; COST: {x}")
+        print(f"REF: {ref}; COST: {x}")
         result = 100 * (x - ref) / ref
-        # print("PRD: {}%".format(result))
-        print(f"{self.iter}, {x}, {result}")
+        print("PRD: {}%".format(result))
+        # print(f"{self.iter}, {x}, {result}")
     
     @staticmethod
     def read_numbers(file):
