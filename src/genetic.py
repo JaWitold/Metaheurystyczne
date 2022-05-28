@@ -16,8 +16,8 @@ class Member:
         self.normalized_cost = 0
         Member.max_cost = max(Member.max_cost, self.cost)
     
-    def normalize(self, sum):
-        self.normalized_cost = self.cost / sum
+    def normalize(self, s):
+        self.normalized_cost = self.cost / s
 
 
 class Population(Graph):
@@ -47,10 +47,9 @@ class Population(Graph):
         while not self.stopping_condition():
             self.iter += 1
             # Member.max_cost = max(self.population, key=lambda x: x.cost).cost
-            # self.population = self.selection(self.population)
+            self.population = self.selection(self.population)
             self.population = self.crossover(self.population)
             self.population = self.mutation(self.population)
-            
             best = self.find_best(self.population)
             if best.cost < self.best.cost:
                 self.best = best
@@ -99,16 +98,20 @@ class Population(Graph):
         fitness of each solution and preferentially select the best solutions. Other methods rate only a random
         sample of the population, as the former process may be very time-consuming.
         """
-        self.normalize(population)
-        new_population = []
-        for _ in range(0, self.POPULATION_MAX_SIZE):
-            index = 0
-            c = random.random()
-            while c > 0:
-                c -= population[index].normalized_cost
-                index += 1
-            index -= 1
-            new_population.append(copy.deepcopy(population[index]))
+        # self.normalize(population)
+        # new_population = []
+        # for _ in range(0, self.POPULATION_MAX_SIZE):
+        #     index = 0
+        #     c = random.random()
+        #     while c > 0:
+        #         c -= population[index].normalized_cost
+        #         index += 1
+        #     index -= 1
+        #     if random.random() > self.SELECTION_RATE:
+        #         new_population.append(copy.deepcopy(population[index]))
+        population = sorted(population, key=lambda x: x.cost)
+        last = math.floor(len(population) * self.SELECTION_RATE)
+        new_population = population[:-last] + population[: last]
         return new_population
 
     @staticmethod
