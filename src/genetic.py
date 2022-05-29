@@ -134,21 +134,21 @@ class Population(Graph):
             new_population.append(Member(c2))
         return new_population
     
-    def prd(self, x):
-        load_dotenv()
-        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
-        if ref is None:
-            print("reference value not found in .env")
-            return
-        ref = int(ref)
-        # print(f"REF: {ref}; COST: {x}")
-        result = 100 * (x - ref) / ref
-        # print("PRD: {}%".format(result))
-        # print(f"{self.iter}, {x}, {result}")
-        with open('C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\tests\\out\\test3.csv', 'a') as fd:
-            name = self.filename.split('\\')[-1]
-            fd.write(f"{name}, {self.iter}, {self.MUTATION_RATE}, {self.SELECTION_RATE}, {self.POPULATION_MAX_SIZE}, "
-                     f"{math.floor(x)}, {result}\n")
+    # def prd(self, x):
+    #     load_dotenv()
+    #     ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
+    #     if ref is None:
+    #         print("reference value not found in .env")
+    #         return
+    #     ref = int(ref)
+    #     # print(f"REF: {ref}; COST: {x}")
+    #     result = 100 * (x - ref) / ref
+    #     # print("PRD: {}%".format(result))
+    #     # print(f"{self.iter}, {x}, {result}")
+    #     with open('C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\tests\\out\\test3.csv', 'a') as fd:
+    #         name = self.filename.split('\\')[-1]
+    #         fd.write(f"{name}, {self.iter}, {self.MUTATION_RATE}, {self.SELECTION_RATE}, {self.POPULATION_MAX_SIZE}, "
+    #                  f"{math.floor(x)}, {result}\n")
     
     def mutation(self, population: list[Member]) -> list[Member]:
         """
