@@ -406,7 +406,7 @@ class Graph:
         # print(f"REF: {ref}; COST: {x}")
         result = 100 * (x - ref) / ref
         # print("PRD: {}%".format(result))
-        print(f"{self.iter}, {x}, {result}")
+        print("{}, {}, {:.2f} %".format(self.iter,x,result))
     
     @staticmethod
     def read_numbers(file):

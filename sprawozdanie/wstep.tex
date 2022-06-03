@@ -17,7 +17,7 @@
   które w znaczy sposób mogą wpłynąć na wydajność jak i ostateczny wynik
   wyprodukowany przez algorytm. Parametry zależne od użytkownika to:
   \begin{itemize}
-    \item Maksymalna liczba iteracji algorytmu (jest to również warunek końcowy działania programu) reprezentowany przez nieujemną liczbą całkowitą
+    \item Maksymalna liczba iteracji algorytmu (jest to również warunek końcowy działania programu) reprezentowany przez nieujemną liczbę całkowitą
     \item Współczynnik mutacji- liczba wymierną z zakresu $[0,1]$, która przedstawia z jaką szansą dany osobnik może ulec mutacji
     \item Współczynnik selekcji- W zależności od trybu działania programu parametr przyjmuje jedną z dwóch form:
     \begin{itemize}
@@ -39,8 +39,7 @@
     z jedyną różnicą zamiany kolejności rodziców w argumentach wywowałnia funkcji. Wykorzystane metody krzyżowania to:
     \begin{enumerate}
       \item Partially Mapped Crossover (PMX)
-      \item Order Crossover (OX)
-      \item Half Crossover (HX)
+      \item Cycle Crossover (CX)
     \end{enumerate}
     \item Metoda \textbf{mutation()} odpowiada za dokonywanie mutacji osobników populacji ze wskazanym przez użytkownika prawdopodobieństwem.
     W celu dokonywania mutacji zaimplementowano dwie metody
@@ -73,7 +72,6 @@
       \begin{itemize}
         \item Wykorzystując odcięcie jedyną problematyczną z punktu widzenia złożoności operacją jest operacja sortowania, która przy wykorzystaniu wbudowanej metody \textbf{sorted()} wykonuje się w czasie \textbf{$O(n*log n)$},
         \item Wykorzystując turniej losujemy z populacji daną część osobników, z której następienie wybieramy dwóch najlepszych. Jak powyżej, ze względu na wykonanie sortowania otrzymujemy złożonosć równą \textbf{$O(k*n*log n)$}, gdzie $k$ jest rozmiarem populacji a $n$ liczbą wybieranych osobników
-        \item Korzystając z ruletki 
       \end{itemize}
       \item \textbf{Crossover} - Metoda dokonująca krzyżowań, która wykonuje się w czasie liniowym względem liczności populacji
       \item \textbf{Mutation} - Metoda dokonująca mutacji, która wykonuje się w czasie liniowym względem liczności populacji
@@ -107,5 +105,5 @@
   \end{figure}
 
   \textbf{Wniosek:} Złożoność obliczeniowa metody \textbf{populate()} wynosi \textbf{$O(k*n*log n)$}, gdzie k oznacza liczbę iteracji, a n- rozmiar populacji. \\
-  Przyglądając się otrzymanym wykresom zauważamy, iż przypominają one bardziej linię prostą aniżeli $n*logn$. Zapewne wynika to z faktu, iż rozmiar populacji jest zdecydowanie mniejszy niż rozmiar populacji.\\
+  Przyglądając się otrzymanym wykresom zauważamy, iż przypominają one bardziej linię prostą aniżeli $n*logn$. Zapewne wynika to z faktu, iż rozmiar populacji jest zdecydowanie mniejszy niż liczba wykonywanych iteracji.\\
  \textbf{Złożoność pamięciowa: }

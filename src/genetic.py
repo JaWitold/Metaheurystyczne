@@ -55,6 +55,7 @@ class Population(Graph):
         self.MAX_ITER_WITH_STAGNATION = int(params[4])
         self.MAX_AGE = int(params[5])
         self.TYPE_OF = int(params[6])
+        self.CROSSOVER_MODE = int(params[7])
         self.previous_best = 0
         self.population = self.generate_population()
         self.best = self.find_best(self.population)
@@ -75,10 +76,13 @@ class Population(Graph):
             self.population = self.add_age(self.population)
             best = self.find_best(self.population)
             if best.cost < self.min_cost:
+                #print(best.dna)
                 self.best = best
                 self.min_cost = best.cost
                 self.path = best.dna
                 self.prd(best.cost)
+                #print(self.path)
+                #print(Counter(self.path))
 
             if self.previous_best==best.cost:
                 stagnation += 1
@@ -91,12 +95,15 @@ class Population(Graph):
                 else:
                     self.population.clear()
                     self.population=self.improve_atsp()
+                    self.population = self.atsp_unstack(self.population)
                 stagnation = 0
 
         
         #self.path = self.best.dna
         self.show_solution(self.min_cost)
         self.prd(self.min_cost)
+        print(Counter(self.path))
+        print(len(self.path))
         print(time.time()-start)
     
     def run(self, algorithm, param):
@@ -177,6 +184,16 @@ class Population(Graph):
             population[i].cost = Member.population.cost(population[i].dna)
             population[i].age = 0
         return population
+
+    def atsp_unstack(self,population):
+        for i in range(len(population)):
+            tmp_list = population[i].dna.tolist()
+            closest_city = Member.population.one_nearest(tmp_list[random.randint(0,math.floor(self.dimension/2))])
+            closest_city_index = tmp_list.index(closest_city)
+            tmp_list[0:closest_city_index] = reversed(tmp_list[0:closest_city_index])
+            population[i] = Member(np.array(tmp_list))
+        return population
+
     
     @staticmethod
     def find_best(population: list[Member]) -> Member:
@@ -228,7 +245,10 @@ class Population(Graph):
         for i in range(5):
             new_population.append(population[i])
         for t1, t2 in zip(population[5::2], population[6::2]):
-            c1, c2 = self.pmx(t1, t2)
+            if self.CROSSOVER_MODE:
+                c1,c2 = self.cx(t1,t2)
+            else:
+                c1, c2 = self.pmx(t1, t2)
             new_population.append(Member(c1))
             new_population.append(Member(c2))
         '''for t1, t2 in zip(population[::2], population[1::2]):
@@ -297,11 +317,48 @@ class Population(Graph):
         
         return child1, child2
 
-    def ox(self,t1,t2):
-         # t2 = Member(np.array([1, 2, 3, 4]))
-        # t1 = Member(np.array([4, 1, 2, 3]))
-        # self.dimension = 4
-        pass
+    def cx(self,t1,t2):
+        cycle1 = []
+        cycle2 = []
+        parent1 = t1.dna.tolist()
+        parent2 = t2.dna.tolist()
+        first = parent1[0]
+        first_index = parent1.index(first)
+        cycle1.append(first)
+        second = -1
+        while second != cycle1[0]:
+            second = parent2[first_index]
+            first_index = parent1.index(second)
+            first = parent1[first_index]
+            cycle1.append(first)
+        cycle1 = cycle1[:len(cycle1)-1]
+
+        first = parent1[1]
+        first_index = parent1.index(first)
+        cycle2.append(first)
+        second = -1
+        while second != cycle2[0]:
+            second = parent2[first_index]
+            first_index = parent1.index(second)
+            first = parent1[first_index]
+            cycle2.append(first)
+        cycle2 = cycle2[:len(cycle2)-1]
+
+        child1 = parent1[:]
+        child2 = parent2[:]
+
+        for element in cycle2:
+            index = parent2.index(element)
+            child1[index] = element
+
+        for element in cycle2:
+            index = parent1.index(element)
+            child2[index] = element
+
+        #print("Child1: ",child1)
+        #print("Child2: ",child2)
+
+        return np.array(child1),np.array(child2)
 
     def hx(self,t1,t2):
          # t2 = Member(np.array([1, 2, 3, 4]))

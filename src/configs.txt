@@ -1,10 +1,26 @@
 gr48:
-python3 main.py load ../vendors/gr48.tsp genetic 1500,0.2,0.7,200,100,35 (3-6%)
+python3 main.py load ../vendors/gr48.tsp genetic 1000,0.2,0.7,200,100,35,1,1 (3-8%)
 gr21:
-python3 main.py load ../vendors/gr21.tsp genetic 500,0.2,0.7,200,100,35 (znajduje perfekcyjne dość szybko)
-[11  3 22  8 12 13 19  1 14 18 17 21 16  9  4 20  7  5 23  7  6  2 10 15
-  0]
+python3 main.py load ../vendors/gr21.tsp genetic 100,0.2,0.7,200,100,35,1,0 (1-9%)
 berlin52:
-python3 main.py load ../vendors/berlin52.tsp genetic 1500,0.2,0.7,200,100,35 (5-10%)
+python3 main.py load ../vendors/berlin52.tsp genetic 1000,0.2,0.7,200,100,35,1,0 (5-11%)
 gr120:
-python3 main.py load ../vendors/gr120.tsp genetic 2000,0.2,0.7,250,100,35 + akceleracja generacji (10-20%)
+python3 main.py load ../vendors/gr120.tsp genetic 2500,0.2,0.7,200,100,35,1,1 ( 5-15%)
+br17:
+python3 main.py load ../vendors/br17.atsp genetic 200,0.2,0.7,200,100,35,0,0 (tutaj najlepsze z reguły)
+ftv47:
+python3 main.py load ../vendors/ftv47.atsp genetic 1000,0.2,0.7,200,100,35,0,1 (30-50%)
+ftv70:
+python3 main.py load ../vendors/ftv70.atsp genetic 2000,0.2,0.7,300,100,35,0,1 (30-50%)
+kro124p:
+python3 main.py load ../vendors/kro124p.atsp genetic 2000,0.2,0.7,200,100,35,0,1 (30-50%)
+
+--POZOSTAŁE Z TSPLIB SPEŁNIAJĄCE WARUNKI ZADANIA KTÓRE ZDĄŻYŁEM SPRAWDZIĆ--
+a280:
+python3 main.py load ../vendors/a280.tsp genetic 4000,0.2,0.7,200,100,35,1,1 (40-80%)
+bays29:
+python3 main.py load ../vendors/bays29.tsp genetic 500,0.2,0.7,200,100,35,1,1 (3-8%)
+bier127:
+python3 main.py load ../vendors/ch130.tsp genetic 2500,0.2,0.7,200,100,35,1,1 (5-20%)
+ch130:
+python3 main.py load ../vendors/ch130.tsp genetic 2500,0.2,0.7,200,100,35,1,1 (10-20%)
