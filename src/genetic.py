@@ -1,5 +1,8 @@
-import numpy as np
 
+from __future__ import annotations
+
+
+import numpy as np
 from graph import Graph
 import copy
 import math
@@ -7,16 +10,18 @@ import random
 from dotenv import load_dotenv
 import csv
 import os
-
-
+import sys
+import time
+from collections import Counter
 
 class Member:
     max_cost: int = 0
     population: Graph
     
     def __init__(self, dna):
-        self.dna = dna
+        self.dna = np.copy(dna)
         self.cost = Member.population.cost(dna)
+        self.age = 0
         self.normalized_cost = 0
         Member.max_cost = max(Member.max_cost, self.cost)
     
@@ -26,9 +31,11 @@ class Member:
 
 class Population(Graph):
     MAX_ITERATIONS: int = 100000
-    SELECTION_RATE: float = 0.6
+    SELECTION_RATE: float = 10
     MUTATION_RATE: float = 0.01
     POPULATION_MAX_SIZE: int = 128
+    MAX_ITER_WITH_STAGNATION : int = 2000
+    MAX_AGE : int = 10
     
     population: list[Member]
     iterations: int = 0
@@ -39,31 +46,58 @@ class Population(Graph):
         Member.population = self
     
     def populate(self, param):
+        start = time.time()
         params = [float(x) for x in param.split(",")]
         self.MAX_ITERATIONS = int(params[0])
         self.MUTATION_RATE = params[1]
         self.SELECTION_RATE = params[2]
         self.POPULATION_MAX_SIZE = int(params[3])
-        
+        self.MAX_ITER_WITH_STAGNATION = int(params[4])
+        self.MAX_AGE = int(params[5])
+        self.TYPE_OF = int(params[6])
+        self.previous_best = 0
         self.population = self.generate_population()
         self.best = self.find_best(self.population)
+        self.min_cost = self.best.cost
+        self.path = self.best.dna
+        self.prd(self.best.cost)
+
+        stagnation=0
         
         while not self.stopping_condition():
             self.iter += 1
-            # Member.max_cost = max(self.population, key=lambda x: x.cost).cost
+            #print(self.iter, ' POPULACJA')
+            #for item in self.population:
+            #    print("{} - {}".format(item.dna,item.cost))
             self.population = self.selection(self.population)
             self.population = self.crossover(self.population)
             self.population = self.mutation(self.population)
+            self.population = self.add_age(self.population)
             best = self.find_best(self.population)
-            if best.cost < self.best.cost:
+            if best.cost < self.min_cost:
                 self.best = best
-                # self.prd(self.best.cost)
+                self.min_cost = best.cost
+                self.path = best.dna
+                self.prd(best.cost)
+
+            if self.previous_best==best.cost:
+                stagnation += 1
+            else:
+                stagnation = 0
+            self.previous_best=best.cost
+            if stagnation>self.MAX_ITER_WITH_STAGNATION:
+                if self.TYPE_OF:
+                    self.population=self.unstack(self.population)
+                else:
+                    self.population.clear()
+                    self.population=self.improve_atsp()
+                stagnation = 0
+
         
-        # self.show_matrix()
-        
-        self.path = self.best.dna
-        self.show_solution(self.best.cost)
-        self.prd(self.best.cost)
+        #self.path = self.best.dna
+        self.show_solution(self.min_cost)
+        self.prd(self.min_cost)
+        print(time.time()-start)
     
     def run(self, algorithm, param):
         if algorithm == 'genetic':
@@ -80,14 +114,68 @@ class Population(Graph):
             self.tabu(param)
         else:
             print("Unsupported algorithm")
+
+    def add_age(self,population):
+        #print(population)
+        for i in range(len(population)):
+            population[i].age += 1
+            #print(population[i].age, end =" ")
+            if population[i].age > self.MAX_AGE:
+                prev = population[i].cost
+                if self.TYPE_OF:
+                    population[i] = Member(self.two_opt_genetic(population[i].dna))
+                else:
+                    population[i] =self.unstack([population[i]])[0]
+                if prev == population[i].cost:
+                    population[i] = self.unstack([population[i]])[0]
+            
+        #print()
+        return population
     
     def generate_population(self) -> list[Member]:
         population = []
-        dna = np.array(range(0, self.dimension))
-        for i in range(0, self.POPULATION_MAX_SIZE):
-            new_dna = dna.copy()
-            np.random.shuffle(new_dna)
+        dna = [x for x in range(self.dimension)]
+        for i in range(0, math.floor(self.POPULATION_MAX_SIZE/2)):
+            new_dna_k = self.k_random_genetic(dna,10)
+            new_dna = dna[:]
+            random.shuffle(new_dna)
+            population.append(Member(new_dna_k))
             population.append(Member(new_dna))
+        return population
+    
+    def improve_atsp(self):
+        population = []
+        dna = [x for x in range(self.dimension)]
+        for i in range(0, math.floor(self.POPULATION_MAX_SIZE/2)-5):
+            new_dna_k = self.k_random_genetic(dna,10)
+            new_dna = dna[:]
+            random.shuffle(new_dna)
+            population.append(Member(new_dna_k))
+            population.append(Member(new_dna))
+        for i in range(5):
+            arr = self.nearest_neighbor(random.randint(0,self.dimension-1))
+            population.append(Member(arr))
+        population = self.unstack(population)
+        population = self.unstack(population)
+        return population
+
+
+    def unstack(self,population) -> list[Member]:
+        '''https://arxiv.org/ftp/arxiv/papers/1801/1801.07233.pdf (RGIBNNM)'''
+        for i in range(len(population)):
+            node_1 = random.randint(0,self.dimension-2)
+            node_2 = random.randint(node_1+1,self.dimension-1)
+            population[i].dna[node_1:node_2] = population[i].dna[node_1:node_2][::-1]
+            random_gene = random.randint(0,self.dimension-1)
+            closest_city = Member.population.one_nearest(random_gene)
+            random_city = random.randint(closest_city-5,closest_city+5)
+            if random_city < 0:
+                random_city = 0
+            if random_city > self.dimension-1:
+                random_city = self.dimension-1
+            population[i].dna[[closest_city,random_city]] = population[i].dna[[random_city,closest_city]]
+            population[i].cost = Member.population.cost(population[i].dna)
+            population[i].age = 0
         return population
     
     @staticmethod
@@ -113,7 +201,15 @@ class Population(Graph):
         #     index -= 1
         #     if random.random() > self.SELECTION_RATE:
         #         new_population.append(copy.deepcopy(population[index]))
-        
+
+        #Turniej
+        #new_population = []
+        #while(len(new_population) < self.POPULATION_MAX_SIZE):
+        #    parents = random.choices(population, k=self.SELECTION_RATE)
+        #    parents  = sorted(parents, key= lambda x:x.cost)
+        #    new_population.append(parents[0])
+        #    new_population.append(parents[1])
+        #return new_population
         population = sorted(population, key=lambda x: x.cost)
         last = math.floor(len(population) * self.SELECTION_RATE)
         new_population = population[:-last] + population[: last]
@@ -128,10 +224,17 @@ class Population(Graph):
     def crossover(self, population: list[Member]) -> list[Member]:
         population = sorted(population, key=lambda x: x.cost)
         new_population = []
-        for t1, t2 in zip(population[::2], population[1::2]):
+        #Elitaryzm
+        for i in range(5):
+            new_population.append(population[i])
+        for t1, t2 in zip(population[5::2], population[6::2]):
             c1, c2 = self.pmx(t1, t2)
             new_population.append(Member(c1))
             new_population.append(Member(c2))
+        '''for t1, t2 in zip(population[::2], population[1::2]):
+            c1, c2 = self.pmx(t1, t2)
+            new_population.append(Member(c1))
+            new_population.append(Member(c2))'''
         return new_population
     
     # def prd(self, x):
@@ -159,9 +262,10 @@ class Population(Graph):
         for member in population:
             if random.random() < self.MUTATION_RATE:
                 i1, i2 = np.random.choice(member.dna.shape[0], 2, replace=False)
-                i1 = 0
+                #i1 = 0
                 if i1 > i2:
                     i1, i2 = i2, i1
+                #i1,i2 = i2,i1
                 # new_dna = np.copy(member.dna)
                 
                 new_population.append(
@@ -192,6 +296,18 @@ class Population(Graph):
             child1[i], child2[i] = t2.dna[i], t1.dna[i]
         
         return child1, child2
+
+    def ox(self,t1,t2):
+         # t2 = Member(np.array([1, 2, 3, 4]))
+        # t1 = Member(np.array([4, 1, 2, 3]))
+        # self.dimension = 4
+        pass
+
+    def hx(self,t1,t2):
+         # t2 = Member(np.array([1, 2, 3, 4]))
+        # t1 = Member(np.array([4, 1, 2, 3]))
+        # self.dimension = 4
+        pass
 
 
 if __name__ == "__main__":

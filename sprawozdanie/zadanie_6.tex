@@ -1,0 +1,66 @@
+\section{Przypadek Testowy 6 - Test statystyczny - Porównanie działania GA z 2OPT}
+  \subsection{Cel:}
+    W teście statystycznym porównanym działanie algorytmu genetycznego z algorytmem TABU,
+    którego implementacją zajęliśmy się w ramach listy 2. Hipotezą startową jest stwierdzenie, że
+    algorytm genetyczny zwraca lepszą średnią medianę wyników niż algorytm TABU. Do analizy
+    uzyskanych wyników zostanie wykorzystany test Wilcoxon'a dla par obserwacji (one-sided).
+  \subsection{Założenia: }
+    Do wykonania tego testu wykorzystano instancje znajdujące się w bibliotece TSPLIB. Początkowe permutacje są generowane w sposób
+    losowy.
+  \subsection{Wykorzystane instancje: }
+    W tym teście zostały wykorzystane następujące instancje z biblioteki TSPLIB:
+    \begin{enumerate}
+      \item berlin52.tsp
+      \item bier127.tsp
+      \item ch150.tsp
+      \item eil76.tsp
+      \item gr120.tsp
+      \item gr48.tsp
+      \item hk48.tsp
+      \item kroA150.tsp
+      \item kroB100.tsp
+      \item kroC100.tsp
+      \item kroD100.tsp
+      \item pr107.tsp
+      \item pr124.tsp
+      \item pr144.tsp
+      \item pr76.tsp
+      \item st70.tsp
+      \item u159.tsp
+    \end{enumerate}
+  \subsection{Test: }
+    \textbf{Hipoteza zerowa: } GA $>=$ TABU \\
+    \textbf{Hipoteza alternatywna: } GA $<$ TABU \\
+    \begin{table}[!ht]
+      \centering
+      \begin{tabular}{| c | c | c | c | c | c |}
+        \hline
+        Pair & GA & TABU & Abs.Diff & Rank & Sign \\
+        6 & 11941 & 11976 & 35 & 1 & -1 \\
+        15 & 678 & 718 & 40 & 2 & -1 \\
+        5 & 5214 & 5283 & 69 & 3 & -1 \\
+        4 & 7703 & 7895 & 192 & 4 & -1 \\
+        1 & 8098 & 8295 & 197 & 5 & -1 \\
+        8 & 23508 & 23302 & 206 & 6 & +1 \\
+        3 & 7964 & 7332 & 632 & 7 & +1 \\
+        13 & 64418 & 63677 & 741 & 8 & +1 \\
+        9 & 21360 & 22141 & 781 & 9 & -1 \\
+        10 & 23717 & 25243 & 1526 & 10 & -1 \\
+        11 & 46617 & 48680 & 2063 & 11 & -1 \\
+        12 & 69279 & 71421 & 2142 & 12 & -1 \\
+        2 & 132632 & 130217 & 2415 & 13 & +1 \\
+        7 & 31533 & 28460 & 3073 & 14 & +1 \\
+        16 & 53914 & 49123 & 4791 & 15 & +1 \\
+        14 & 109056 & 118174 & 9118 & 16 & -1 \\
+        \hline
+          
+      \end{tabular}
+      \caption{Tabela rang dla testu Wilcoxona}
+      $W_{-} = 1+2+3+4+5+9+10+11+12+16=73$
+      $W_{+} = 6+7+8+13+14+15 $
+      $min(W_{+},W_{-}) = 63 = T$
+  
+    \end{table}
+  \subsection{Wnioski: }
+    Wartość krytyczna $\alpha = 0.05$, dla tego typu statystyk $T_{crit} = 35$ (dana z tabeli dla hipotez "o jednym ogonie").
+    Nie możemy odrzucić hipotezy zerowej, gdyż nie ma wystarczających dowodów aby spekulować o tym, iż różnica median w tym przypadku jest mniejsza niż 0 ($ T > 35$).

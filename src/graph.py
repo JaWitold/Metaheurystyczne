@@ -1,9 +1,12 @@
 from matplotlib import pyplot as plt
+import numpy as np
 import sys
 import random
 import copy
 import os
+import math
 from dotenv import load_dotenv
+from sklearn import neighbors
 from generate import GraphGenerator
 import matplotlib.pyplot as plt
 
@@ -138,6 +141,24 @@ class Graph:
         # self.draw_solution()
         # self.prd(cost)
     
+    def k_random_genetic(self, vertex, k):
+        min_dist = sys.maxsize
+        path = []
+        for j in range(k):
+            random.shuffle(vertex)
+            distance = self.cost(vertex)
+            if distance < min_dist:
+                min_dist = distance
+                path = vertex.copy()
+        #self.path = path
+        cost = min_dist
+
+        return path
+        # self.show_matrix()
+        # self.show_solution(cost)
+        # self.draw_solution()
+        # self.prd(cost)
+    
     def nearest_neighbor(self, start):
         # self.show_matrix()
         min_dist = 0
@@ -154,11 +175,25 @@ class Graph:
                     path.append(key)
                     break
         min_dist = min_dist + int(self.matrix[path[0]][path[self.dimension - 1]])
+        i = random.randint(0,self.dimension-1)
+        j = random.randint(0,self.dimension-1)
+        path[i:j] = reversed(path[i:j])
         # self.path = path
         # self.show_matrix()
         # self.show_solution(min_dist)
         # self.draw_solution()
-        self.prd(min_dist)
+        #self.prd(min_dist)
+        return path
+
+    def one_nearest(self,start):
+        matrix_copy = copy.deepcopy(self.matrix)
+        indexes= [ x for x in range(self.dimension)]
+        points = dict(zip(indexes, matrix_copy[start]))
+        neighbors = sorted(points.items(),key=lambda x: x[1])
+        for element in neighbors:
+            if element[1] == 0:
+                continue
+            return element[0]
     
     # oduzaleznienie od wyboru sasiada poprzez sprawdzenie trasy dla kazdego wierzc
     def extended_nearest_neighbor(self):
@@ -212,6 +247,8 @@ class Graph:
             print(f"path is too short, expected {self.dimension}")
             return
         best = path
+        #print(best)
+        #print(self.matrix)
         improved = True
         while improved:
             improved = False
@@ -219,6 +256,7 @@ class Graph:
                 for j in range(i + 1, len(path)):
                     # if j - i == 1: continue
                     current_cost = self.cost(best)
+                    #print(current_cost)
                     new_route = path[:]
                     new_route[i:j] = reversed(new_route[i:j])
                     if self.cost(new_route) < current_cost:
@@ -230,8 +268,34 @@ class Graph:
         # self.show_matrix()
         self.show_solution(cost)
         # self.draw_solution()
-        # self.prd(cost)
-    
+        self.prd(cost)
+
+    def two_opt_genetic(self,path):
+        # path = [int(x) for x in param.split(",")]
+        if len(path) != self.dimension:
+            print(f"path is too short, expected {self.dimension}")
+            return
+        path = path.tolist()
+        best = path
+        improved = True
+        while improved:
+            improved = False
+            i=random.randint(0,self.dimension-1)
+            for j in range(0, len(path)):
+                # if j - i == 1: continue
+                current_cost = self.cost(best)
+                #print(current_cost)
+                new_route = path[:]
+                new_route[i:j] = reversed(new_route[i:j])
+                if self.cost(new_route) < current_cost:
+                    best = new_route
+                    improved = True
+                    break
+            path = best
+        self.path = path
+        cost = self.cost(self.path)
+        return path
+
     def tabu(self, param):
         # self.extended_nearest_neighbor()
         # self.two_opt("None")
@@ -334,7 +398,7 @@ class Graph:
     
     def prd(self, x):
         load_dotenv()
-        ref = os.getenv(self.filename.split('\\')[-1].split('.')[0])
+        ref = os.getenv(self.filename.split('/')[-1].split('.')[0])
         if ref is None:
             print("reference value not found in .env")
             return
