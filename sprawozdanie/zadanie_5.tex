@@ -19,6 +19,9 @@
     \end{enumerate}
     Wszystkie parametry wywołania pozostały niezmienne przez cały okres wykonywania testów.
   \subsection{Wyniki: }
+  \textbf{UWAGA}: W poniższej tabeli kolumna \textit{Różnica} oznacza różnicę między otrzymanymi średnimi wartościami PRD dla testowanych metod krzyżowania.
+  Dodatnia wartość różnicy świadczy o tym, iż w danym teście lepsze wyniki średnio produkowały wywołania wykorzystujące metodę krzyżowania CX, natomiast 
+  ujemna różnica świadczy o lepszych wynikach metody PMX. \\
     Poniższa tabela przedstawia uśrednione wyniki testów:
     \begin{table}[!ht]
       \centering
@@ -26,13 +29,13 @@
         \hline
         Instancja & PMX & CX & Różnica \\
         \hline
-        gr48.tsp & 3.324& 3.506 & -0,182 \\
-        gr21.tsp & 3.746& 3.502 & 0,244 \\
-        berlin52.tsp & 8,096 & 7,362 & 0,734 \\
-        br17.atsp & 0 & 0 & 0 \\
-        ftv47.atsp & 39,3 & 35,8 & 3,5 \\
-        ftv70.atsp & 25,898 & 32,482 & -6,584 \\
-        kro124p.atsp & 27,184 & 26,008 & 1,176 \\
+        gr48.tsp & 3.324 \%& 3.506 \% & -0,182 \%\\
+        gr21.tsp & 3.746 \%& 3.502 \%& 0,244 \%\\
+        berlin52.tsp & 8,096 \%& 7,362 \% & 0,734 \%\\
+        br17.atsp & 0 \%& 0 \%& 0 \%\\
+        ftv47.atsp & 39,3 \%& 35,8 \%& 3,5 \%\\
+        ftv70.atsp & 25,898 \%& 32,482 \%& -6,584 \%\\
+        kro124p.atsp & 27,184 \%& 26,008 \%& 1,176 \%\\
 
         \hline
           

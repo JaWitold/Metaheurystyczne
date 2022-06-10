@@ -54,56 +54,117 @@
     \item Opcjonalny etap, który polega na wykonaniu operacji \textbf{unstack()} w sytuacji, gdy algorytm wykryje wystąpenie stagnacji
   \end{enumerate}
   \textbf{UWAGA}: Kroki 2-7 wykonywane są w pętli, której warunkiem końcowym jest liczba iteracji podana przez użytkownika jako jeden z argumentów uruchomienia programu. \\
- \textbf{Złożoność obliczeniowa: }
-    Główna pętla programu znajduje się w metodzie o nazwie \textbf{populate()}. Analiza złożoności obliczeniowej zostanie wykonana poprzez analizę poszczególnych metod
-    wykonywanych w trakcie działania głównej pętli. Przyjmujemy, że liczba wykonań pętli \textbf{while()} jest wartością stałą.
-    \begin{enumerate}
-      \item \textbf{Generate Population} - W tej metodzie dochodzi do wygenerowania początkowej populacji. Ze względu na fakt, iż uzyskae wyniki zależą od początkowej populacji 
-      w realizacji programu zdecydowaliśmy się na dwie metody generowania populacji. Drugą z nich jest \textbf{Improve Atsp}, której omówienie znajduje się poniżej.
-      W ów metodzie generujemy liczbę osobników równą rozmiarowi populacji. Rozmiar populacji jest liczbą stałą podaną przez użytkownika.
-      W pętli głównej dochodzi do wygenerowania osobników dwoma sposobami. Jednym z nich jest wykonanie funkcji \textbf{shuffle()}, drugą jest wykorzystanie
-      wcześniej zaimplementowanego algorytmu \textbf{K random()} ze stałą równą \textit{10}. 
-      Złożoności obliczeniowa ów metod generujących to odpowiednio: \textbf{$O(n)$} oraz \textbf{$O(n$)}. Reasumując dochodzimy do wniosku, iż złożoność obliczeniowa
-      rozpatrywanej metody wynosi \textbf{$O(k*n)$}, gdzie $k$ oznacza rozmiar populacji.
-      \item \textbf{Improve atsp} - W tej metodzie dodatkowo generujemy 5 osobników korzystając z metody najbliższego sąsiada, której implementacją oraz analizą zajmowaliśmy się w ramach pierwszej listy zadań, stąd wiemy 
-      iż jej złożoność obliczeniowa jest równa $O(n^2*log n)$. Dodatkowo do lekkiego wymieszania osobników wykorzystujemy metodę \textbf{unstack()}, której złożoność wynosi \textbf{$O(k*n)$}, gdzie $k$ to rozmiar populacji (co zostanie wykazane w późniejszej częście sprawozdania).
-      \item \textbf{Find Best} - Metoda znajdująca najlepszego osobnika po funkcji celu wykorzystująca wbudowaną w pythonie funkcję \textbf{min()}. Złożoność obliczeniowa- \textbf{$O(n)$}.
-      \item \textbf{Selection} - Metoda dokonująca selekcji osobników. W zależności od użytej metody otrzymujemy różne złożoności obliczeniowe:
-      \begin{itemize}
-        \item Wykorzystując odcięcie jedyną problematyczną z punktu widzenia złożoności operacją jest operacja sortowania, która przy wykorzystaniu wbudowanej metody \textbf{sorted()} wykonuje się w czasie \textbf{$O(n*log n)$},
-        \item Wykorzystując turniej losujemy z populacji daną część osobników, z której następienie wybieramy dwóch najlepszych. Jak powyżej, ze względu na wykonanie sortowania otrzymujemy złożonosć równą \textbf{$O(k*n*log n)$}, gdzie $k$ jest rozmiarem populacji a $n$ liczbą wybieranych osobników
-      \end{itemize}
-      \item \textbf{Crossover} - Metoda dokonująca krzyżowań, która wykonuje się w czasie liniowym względem liczności populacji
-      \item \textbf{Mutation} - Metoda dokonująca mutacji, która wykonuje się w czasie liniowym względem liczności populacji
-      \item \textbf{Add Age} - Metoda dodająca wiek do każdego członka populacji wykonująca się w czasie liniowym względem liczby populacji 
-      \item \textbf{Unstack} - Metoda wykorzystywana do uniknięcia stagnacji oraz przedwczesnych zbieżności, która wykonuje się w czasie liniowym względem liczby populacji 
+ \textbf{Złożoność obliczeniowa: } \\
+  \textit{\textbf{UWAGA}: Literą \textbf{n} oznaczono rozmiar permutacji, \textbf{l}- rozmiar populacji, a \textbf{k}- liczbę iteracji algorytmu} \\
+  Główna pętla programu znajduje się w metodzie o nazwie \textbf{populate()}. Analiza złożoności obliczeniowej zostanie wykonana
+  poprzez analizę poszczególnych metod wykonywanych w trakcie działania głównej pętli. Przyjmujemy, że liczba wykonań pętli \textbf{while()}
+  jest wartością stałą.
+  \begin{enumerate}
+    \item \textbf{GeneratePopulation()}- W tej metodzie dochodzi do wygenerowania początkowej populacji. Ze względu na fakt,
+    iż uzyskane wyniki zależą od początkowej populacji, w realizacji programu zdecydowaliśmy się na dwie metody generacji.
+    Drugą z nich jest metoda o nazwie \textbf{ImproveAtsp()}. Metoda \textbf{Generate Population} generuje liczbę osobników równą rozmiarowi populacji. Rozmiar populacji jest stałą, podaną przez użytkownika.
+    W pętli główej metody dochodzi do generacji osobników dwoma sposobami. Jeden z nich wykorzystuje wbudowaną funkcję \textbf{shuffle()}, drugą natomiast jest wykorzystanie wcześniej zaimplementowanego algorytmu
+    \textbf{K-random()} ze stałą liczbą powtórzeń równą \textit{10}. Złożoność obliczeniowa ów metod generacyjnych wynosi odpowiednio: $O(n)$ oraz $O(n)$.
+    Zauważamy więc, iż wygenerowanie pojedynczego osobnika zależy liniowo od liczby miast w danej instancji.
+    Wygenerowanie wszystkich osobników pierwszej populacji zajmuję więć $O(l*n) = O(n)$,\\
+    \item Metoda \textbf{ImproveAtsp()} dodatkowo generuje $5\%$ osobników przy wykorzystaniu metody najbliższego sąsiada, której implementacja odbyła się w ramach poprzednich list zadań. Ponadto w celu wymieszania osobników wykorzystujemy metodę \textbf{unstack()}, której złożoność wynosi $O(n*logn)$
+    Wiemy więc, iż złożoność obliczeniowa metody najbliższego sąsiada wynosi $O(n^2*logn)$, zatem z sumy $O((19*l/20)*n) + O((l/20)*n^{2}*logn) + O((l/20)*n*logn)$ otrzymujemy złożoność obliczeniową na poziomie $O(n^{2}*logn)$.
+    \item \textbf{FindBest()} - Metoda znajdująca najlepszego osobnika po funkcji celu wykorzystująca wbudowaną w pythonie funkcję \textbf{min()}. Złożoność obliczeniowa jest stała względem wielkości instancji.
+    \item \textbf{Selection()} - Metoda dokonująca selekcji osobników. W zależności od użytej metody otrzymujemy odpowiednie złożoności obliczeniowe:
+    \begin{itemize}
+      \item  Wykorzystując odcięcie korzystamy z sortowania wcześniej obliczonych funkcji celu, z tego powodu złożoność obliczeniowa tego sposobu wynosi $O(l)$, czyli z perspektywy długości instancji jest równa $O(1)$.
+      \item Wykorzystując turniej losujemy z populacji daną część osobników, z której następienie wybieramy dwóch najlepszych. Jak powyżej, ze względu na wykonanie sortowania otrzymujemy złożonosć równą $O(k*l) = O(1)$, gdyż ów operację powtarzamy, aż osiągniemy wskazany przez użytkownika rozmiar populacji.
+    \end{itemize}
+    \item \textbf{Crossover()} - Metoda dokonująca krzyżowania osobników. Program realizuje krzyżowania przy pomocy dwóch metod:
+    \begin{itemize}
+      \item PMX - W tej metodzie po wybraniu odpowiedniego punktu przecięcia dokonywane jest odpowiednie przestawianie genów rodziców w celu uzyskania dwójki potomstwa. Zakładając, że w najgorszym przypadku
+      punkt przecięcia to ostatni gen zauważamy, iż złożoność obliczeniowa tej metody wynosi $O(n)$, gdyż wszystkie operacje w pętli for wykonują się w czasie stałym
+      \item CX - W tej metodzie wyszukujemy cykle między rodzicami, po czym generujemy potomstwo poprzez odpowiednie przepisanie wybranych cyklów. W najgorszym przypadku jeden z cykli może składać się z wszystkich genów- wtedy złożoność ów metody również wynosi $O(n)$.
+    \end{itemize}
+    Reasumując, metoda krzyżowań działa ze złożonością $O((l/2)*n) = O(l*n)$ ze względu na to, iż krzyżowaniu ulega każdy osobnik z poprzedniej generacji.
+    \item \textbf{Mutation()} - Metoda dokonująca mutacji. Mutacja pojedynczego osobnika w najgorszym przypadku może się odbywać w czasie liniowym względem liczby miast w instancji (jeśli do inverta zostanie wylosowane pierwsze i ostatnie miasto permutacji). Dodatkowo częstotliwość mutacji jest zależna od współczynnika wprowadzonego przez użytkownika.
+    Złożoność obliczeniowa tej metody wynosi $O(l*n) = O(n)$, gdyż w najgorszym przypadku dla każdego osobnika z populacji możemy dokonać mutacji w pojedynczym przebiegu metody.
+    \item \textbf{AddAge()} - Metoda dodająca wiek do każdego członka populacji, która wykonuje się w czasie stałym względem rozmiaru pojedyncznej instancji, poza przypadkiem, gdy osobnik osiągnie maksymalny wiek. Wtedy uruchamiana jest procedura \textbf{unstack()}, której złożoność obliczeniowa wynosi $O(n*logn)$
+    \item \textbf{Unstack()} - Metoda wykorzystywana do uniknięcia stagnacji oraz przedwczesnych zbieżności. Ze względu na użycie w niej sortowania otrzymujemy złożność na poziomie $O(l*n*logn) = O(n*logn)$.
 
-    \end{enumerate}
+  \end{enumerate}
+  \textbf{Reasumując: } Metody oznaczone na liście numerami 3-8 wykonują się w pętli \textbf{while()} dokładnie $k$ razy. Policzmy więc złożoność obliczeniową pojedynczego wykonania głównej pętli metody \textbf{populate()}. \\
+  $O(1) + O(1) + O(l*n) + O(l*n)  + O(1) + O(l*n*logn) = O(l*n*logn)$. Dodając liczbę wykonań pętli otrzymujemy złożoność na poziomie $O(k*l*n*logn)$. Biorąc pod uwagę, iż $k$ oraz $l$ to stałe otrzymujemy złożoność na poziomie $O(n*logn)$\\
+  \textbf{UWAGA:} Powyższa złożoność zakładałą wykorzystanie metody generacji o nazwie \textbf{GeneratePopulation()} oraz metody selekcji typu odcięcie. Wykorzystująć metodę generacji \textbf{ImproveAtsp()}, która jak sama nazwa wskazuje jest wkorzystywana przy pracy z instancjami asymetrycznymi,
+  złożoność obliczeniowa zmienia się na $O(k*l*n^{2}*logn) = O(n^{2}*logn)$. \\
   \textbf{Wykresy:}
-  Na poniższych wykresach eksperymentalnie wykazaliśmy przedstawioną powyżej złożoność obliczeniową. 
-  Do testów wykorzystaliśmy instancje \textbf{berlin52} oraz \textbf{gr24}, które znajdują się w bibliotece TSPLIB.
-  Dodatkowo badanymi parametrami były liczba iteracji oraz rozmiar populacji.
+  Testy zostały wykonane przy użyciu następujących, stałych parametrów:
+  \begin{itemize}
+    \item Liczba iteracji: 100
+    \item Współczynnik mutacji: 0.2
+    \item Współczynnik selekcji: 0.7
+    \item Rozmiar populacji: 200
+    \item Maksymalna stagnacja: 10
+    \item Maksymalny wiek: 35
+  \end{itemize}
+  Ponadto badane rozmiary pojedynczych permutacji należą do zbioru $n \in \{10,60,110,...,960\}$
+  Poniższe wykresy przedstawiają faktyczną złożoność obliczeniową każdej z wyżej wymienionych metod:
   \begin{figure}[H]
-    \includegraphics[scale=0.75]{berlin52Iter.png}
+    \includegraphics[scale=0.75]{GeneratePopulation.png}
     \centering
-    \caption{Zależność czasu od liczby iteracji dla instancji berlin52}
+    \caption{Zależność czasu działania metody GeneratePopulation od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n)$ \\
+    Złożoność wynikająca z testów: $O(n)$ \\
   \end{figure}
   \begin{figure}[H]
-    \includegraphics[scale=0.75]{gr24Iter.png}
+    \includegraphics[scale=0.75]{ImproveAtsp.png}
     \centering
-    \caption{Zależność czasu od liczby iteracji dla instancji gr24}
+    \caption{Zależność czasu działania metody ImproveAtsp od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n^2*logn)$ \\
+    Złożoność wynikająca z testów: Przypominająca $O(n^2)$ \\
+    Należy zauważyć, iż przeprowadzana analiza jest dla przypadku worst-case, stąd mogą wystąpić rozbieżności między faktyczną, a przewidywaną złożonością.
   \end{figure}
   \begin{figure}[H]
-    \includegraphics[scale=0.75]{berlin52Pop.png}
+    \includegraphics[scale=0.75]{FindBest.png}
     \centering
-    \caption{Zależność czasu od rozmiaru populacji dla instancji berlin52}
+    \caption{Zależność czasu działania metody FindBest od rozmiaru permutacji}
+    Przewidywana złożoność: $O(1)$ \\
+    Złożoność wynikająca z testów: $O(1)$ \\
   \end{figure}
   \begin{figure}[H]
-    \includegraphics[scale=0.75]{gr24Pop.png}
+    \includegraphics[scale=0.75]{Selection.png}
     \centering
-    \caption{Zależność czasu od rozmiaru populacji dla instancji gr24}
+    \caption{Zależność czasu działania metody Selection od rozmiaru permutacji}
+    Przewidywana złożoność: $O(1)$ \\
+    Złożoność wynikająca z testów: Przypominająca $O(1)$ \\
+  \end{figure}
+  \begin{figure}[H]
+    \includegraphics[scale=0.75]{Crossover.png}
+    \centering
+    \caption{Zależność czasu działania metody Crossover od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n)$ \\
+    Złożoność wynikająca z testów: $O(n)$ \\
+  \end{figure}
+  \begin{figure}[H]
+    \includegraphics[scale=0.75]{Mutation.png}
+    \centering
+    \caption{Zależność czasu działania metody Mutation od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n)$ \\
+    Złożoność wynikająca z testów:$O(n)$ \\
+  \end{figure}
+  \begin{figure}[H]
+    \includegraphics[scale=0.75]{Unstack.png}
+    \centering
+    \caption{Zależność czasu działania metody Unstack od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n*logn)$ \\
+    Złożoność wynikająca z testów: $O(n^{2})$ \\
+  \end{figure}
+  \begin{figure}[H]
+    \includegraphics[scale=0.75]{Populate.png}
+    \centering
+    \caption{Zależność czasu działania metody Populate od rozmiaru permutacji}
+    Przewidywana złożoność: $O(n*logn)$ \\
+    Złożoność wynikająca z testów: Przypominająca $O(n)$ \\
   \end{figure}
 
-  \textbf{Wniosek:} Złożoność obliczeniowa metody \textbf{populate()} wynosi \textbf{$O(k*n*log n)$}, gdzie k oznacza liczbę iteracji, a n- rozmiar populacji. \\
-  Przyglądając się otrzymanym wykresom zauważamy, iż przypominają one bardziej linię prostą aniżeli $n*logn$. Zapewne wynika to z faktu, iż rozmiar populacji jest zdecydowanie mniejszy niż liczba wykonywanych iteracji.\\
- \textbf{Złożoność pamięciowa: }
+
+  \textbf{Wniosek:}
+  Zauważamy rozbieżność między teoretycznym wynikiem otrzymanym w wyniku analizy złożoności z praktycznym wynikiem otrzymanym w ramach testów.
+  Wynika to z faktu, iż teoretyczny model zakłada podejście "worst-case", czyli podejście najgorszego przypadku, w którym metoda \textbf{Unstack()} wykonuje się w każdej iteracji pętli,
+  jednakże w praktyce ów procedura wykonuje się stosunkowo rzadko. Ze względu na ten fakt zauważamy, iż w większości iteracji możemy pominąć wywołanie tej funkcji, co prowadzi do otrzymania
+  liniowej złożoności obliczeniowej, którą faktycznie obserwujemy w przeprowadzonych testach.
