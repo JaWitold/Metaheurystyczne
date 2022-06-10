@@ -11,10 +11,10 @@ def run(path, ending):
     # runs only on windows
     os.chdir(path)
     cwd = os.getcwd()
+    
     list_of_graphs = [x for x in os.listdir(cwd) if x.endswith(ending)]
-
     index = 0
-    r = range(100, 1001, 100)
+    
     for directory in list_of_graphs:
         index += 1
         os.chdir(directory)
@@ -22,16 +22,18 @@ def run(path, ending):
         if os.listdir(cwd)[0] == "brazil58.tsp":
             os.chdir('..')
             continue
-        print(os.listdir(cwd)[0])
-        for i in r:
-            index += 1
-            command = '" C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" ' + "C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\src\\main.py load " + f"C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\vendors\\ALL_tsp\\{os.listdir(cwd)[0]}\\{os.listdir(cwd)[0]}" + f" tabu {i},200,50,20"
-            print(f"finnished {round(index / (len(r) * len(list_of_graphs)) * 100)}%, ({index}/{len(r) * len(list_of_graphs)})")
-            result = os.system(command)
-            if result != 0:
-                print(command)
+        if os.listdir(cwd)[0] == "berlin52.tsp":
+            for p in range(10, 11, 10):
+                for i in range(10000, 10001, 1000):
+                    for m in range(5, 96, 10):
+                        for n in range(0, 3):
+                            command = '"C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python39\\python.exe" ' + "C:\\Users\\user\\Desktop\\wppt\\metaheurystyczne\\src\\main.py load " + cwd + '\\' + \
+                                      os.listdir(cwd)[0] + f" genetic {i},{m/100},0.95,{p}"
+                            os.system(command)
         os.chdir('..')
         # exit()
+    
+    print(list_of_graphs)
 
 
 run(tsp, ".tsp")

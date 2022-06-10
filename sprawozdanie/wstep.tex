@@ -5,7 +5,7 @@
   zadanego krytermium. Nazwa ów algorytmu pochodzi od sposobu działania, który
   przypomina znane w przyrodzie zjawisko ewolucji biologicznej. \\
   Algorytm genetyczny rozpoczyna pracę poprzez wybranie pewnej grupy osobników,
-  którą będziemy nazywać \textbf{populacją}. Każda osobnik należący do populacji
+  którą będziemy nazywać \textbf{populacją}. Każdy osobnik należący do populacji
   posiada przypisane pewne informacje, które stanowią jego \textbf{genotyp}, na podstawie
   którego tworzony jest \textbf{fenotyp}. Genotyp opisuje proponowane rozwiązanie problemu, a fenotyp przedstawia nam, jak dobre jest to rozwiązanie 
   (tu: funkcja celu). Genotyp składa się z \textbf{chromosomów}, natomiast chromosomy składają
@@ -14,12 +14,12 @@
   jest przystowanie osobników do danego środowiska. W naszym przypadku algorytm
   będzie dążył do redukcji funkcji celu. \\
   Przed rozpoczeciem działania algorytm pobiera od użytkownika szereg informacji,
-  które w znaczy sposób mogą wpłynąć na wydajność jak i ostateczny wynik
+  które w znaczny sposób mogą wpłynąć na wydajność jak i ostateczny wynik
   wyprodukowany przez algorytm. Parametry zależne od użytkownika to:
   \begin{itemize}
     \item Maksymalna liczba iteracji algorytmu (jest to również warunek końcowy działania programu) reprezentowany przez nieujemną liczbę całkowitą
     \item Współczynnik mutacji- liczba wymierną z zakresu $[0,1]$, która przedstawia z jaką szansą dany osobnik może ulec mutacji
-    \item Współczynnik selekcji- W zależności od trybu działania programu parametr przyjmuje jedną z dwóch form:
+    \item Współczynnik selekcji- W zależności od trybu działania programu parametr przyjmuje jedną z trzech form:
     \begin{itemize}
       \item Nieujemną liczbę całkowitą w przypadku skorzystania z turnieju. Wtedy ów liczba reprezentuje z ilu uczestników turnieju wybieramy rodziców do dalszego krzyżowania
       \item Liczbę wymierną z zakresu $[0,1]$, która przedstawia jaki procent populacji ulegnie krzyżowaniu. Wybierając liczbę 0.7 przypisujemy operacji krzyżowania $70\%$ najlepszych osobników, $30\%$ najgorszych nie ulegnie ewolucji i zostanie zastąpiona (odcięcie)
@@ -33,10 +33,10 @@
   \begin{enumerate}
     \item Pierwszym krokiem jest wygenerowanie pierwszej populacji przy użyciu metody \textbf{generate population()}
     \item Dochodzi do operacji selekcji osobników, która realizowana jest przez metodę \textbf{selection()}. 
-    W zależności od wyboru użytkownika, selekcja jest przeprowadzana w formie turnieju lub ogranieczenia zbioru populacji do wskazanego procenta, najsłabi osobnicy poza wskazanym procentem są nadpisywani przez najlepszych (tak zwane \textbf{Odcięcie}).
+    W zależności od wyboru użytkownika, selekcja jest przeprowadzana w formie turnieju lub ogranieczenia zbioru populacji do wskazanego procenta, najsłabsi osobnicy poza wskazanym procentem są nadpisywani przez najlepszych (tak zwane \textbf{Odcięcie}).
     \item Przy użyciu metody \textbf{crossover()} dochodzi do operacji krzyżowania, która wykorzystując dwóch osobników z obecnej populacji (tak zwanych \textbf{rodziców}) generuje nowych dwóch osobników (\textbf{dzieci}).
     Generowanie dzieci zachodzi poprzez wymianę genów między rodzicami z zachowaniem własności cyklu Hamiltona. Z reguły generacja drugiego dziecka przebiega identycznie do wygenerowania drugiego,
-    z jedyną różnicą zamiany kolejności rodziców w argumentach wywowałnia funkcji. Wykorzystane metody krzyżowania to:
+    z jedyną różnicą zamiany kolejności rodziców w argumentach wywołnia funkcji. Wykorzystane metody krzyżowania to:
     \begin{enumerate}
       \item Partially Mapped Crossover (PMX)
       \item Cycle Crossover (CX)
@@ -66,7 +66,7 @@
     W pętli główej metody dochodzi do generacji osobników dwoma sposobami. Jeden z nich wykorzystuje wbudowaną funkcję \textbf{shuffle()}, drugą natomiast jest wykorzystanie wcześniej zaimplementowanego algorytmu
     \textbf{K-random()} ze stałą liczbą powtórzeń równą \textit{10}. Złożoność obliczeniowa ów metod generacyjnych wynosi odpowiednio: $O(n)$ oraz $O(n)$.
     Zauważamy więc, iż wygenerowanie pojedynczego osobnika zależy liniowo od liczby miast w danej instancji.
-    Wygenerowanie wszystkich osobników pierwszej populacji zajmuję więć $O(l*n) = O(n)$,\\
+    Wygenerowanie wszystkich osobników pierwszej populacji zajmuję więc $O(l*n) = O(n)$,\\
     \item Metoda \textbf{ImproveAtsp()} dodatkowo generuje $5\%$ osobników przy wykorzystaniu metody najbliższego sąsiada, której implementacja odbyła się w ramach poprzednich list zadań. Ponadto w celu wymieszania osobników wykorzystujemy metodę \textbf{unstack()}, której złożoność wynosi $O(n*logn)$
     Wiemy więc, iż złożoność obliczeniowa metody najbliższego sąsiada wynosi $O(n^2*logn)$, zatem z sumy $O((19*l/20)*n) + O((l/20)*n^{2}*logn) + O((l/20)*n*logn)$ otrzymujemy złożoność obliczeniową na poziomie $O(n^{2}*logn)$.
     \item \textbf{FindBest()} - Metoda znajdująca najlepszego osobnika po funkcji celu wykorzystująca wbudowaną w pythonie funkcję \textbf{min()}. Złożoność obliczeniowa jest stała względem wielkości instancji.
@@ -90,7 +90,7 @@
   \end{enumerate}
   \textbf{Reasumując: } Metody oznaczone na liście numerami 3-8 wykonują się w pętli \textbf{while()} dokładnie $k$ razy. Policzmy więc złożoność obliczeniową pojedynczego wykonania głównej pętli metody \textbf{populate()}. \\
   $O(1) + O(1) + O(l*n) + O(l*n)  + O(1) + O(l*n*logn) = O(l*n*logn)$. Dodając liczbę wykonań pętli otrzymujemy złożoność na poziomie $O(k*l*n*logn)$. Biorąc pod uwagę, iż $k$ oraz $l$ to stałe otrzymujemy złożoność na poziomie $O(n*logn)$\\
-  \textbf{UWAGA:} Powyższa złożoność zakładałą wykorzystanie metody generacji o nazwie \textbf{GeneratePopulation()} oraz metody selekcji typu odcięcie. Wykorzystująć metodę generacji \textbf{ImproveAtsp()}, która jak sama nazwa wskazuje jest wkorzystywana przy pracy z instancjami asymetrycznymi,
+  \textbf{UWAGA:} Powyższa złożoność zakładała wykorzystanie metody generacji o nazwie \textbf{GeneratePopulation()} oraz metody selekcji typu odcięcie. Wykorzystując metodę generacji \textbf{ImproveAtsp()}, która jak sama nazwa wskazuje jest wkorzystywana przy pracy z instancjami asymetrycznymi,
   złożoność obliczeniowa zmienia się na $O(k*l*n^{2}*logn) = O(n^{2}*logn)$. \\
   \textbf{Wykresy:}
   Testy zostały wykonane przy użyciu następujących, stałych parametrów:
